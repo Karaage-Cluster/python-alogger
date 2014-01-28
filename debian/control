@@ -7,7 +7,7 @@ Standards-Version: 3.9.3
 
 Package: python-alogger
 Architecture: all
-Homepage: http://trac.vpac.org/alogger-ng/
+Homepage: https://github.com/Karaage-Cluster/python-alogger
 Depends: ${misc:Depends}, ${python:Depends}
 Description: Small Python library to parse resource manager logs
  Parses PBS and SGE logs and puts the information
