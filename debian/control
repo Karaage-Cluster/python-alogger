@@ -3,11 +3,11 @@ Section: python
 Priority: optional
 Maintainer: Brian May <bam@debian.org>
 Build-Depends: debhelper (>=8.1.0), python (>= 2.6.6-3~)
-Standards-Version: 3.9.3
+Standards-Version: 3.9.5
+Homepage: https://github.com/Karaage-Cluster/python-alogger
 
 Package: python-alogger
 Architecture: all
-Homepage: https://github.com/Karaage-Cluster/python-alogger
 Depends: ${misc:Depends}, ${python:Depends}
 Description: Small Python library to parse resource manager logs
  Parses PBS and SGE logs and puts the information
