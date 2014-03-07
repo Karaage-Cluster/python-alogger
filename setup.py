@@ -30,5 +30,15 @@ setup(
     author_email = 'brian@vpac.org',
     description = 'Small python library to parse resource manager logs',
     packages = find_packages(),
-    license = "GPL3+"
+    license = "GPL3+",
+    long_description = open('README.rst').read(),
+    classifiers = [
+        "Development Status :: 5 - Production/Stable",
+        "Intended Audience :: Developers",
+        "License :: OSI Approved :: GNU Lesser General Public License v3 or later (LGPLv3+)",
+        "Operating System :: OS Independent",
+        "Programming Language :: Python",
+        "Topic :: Software Development :: Libraries :: Python Modules",
+    ],
+    keywords = "karaage cluster user administration",
 )
