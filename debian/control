@@ -10,7 +10,7 @@ Package: python-alogger
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends}
 Description: Small Python library to parse resource manager logs
- Parses PBS and SGE logs and puts the information
- in a common Python dictionary.
- Provides one method that takes in a log file and type and
- returns a Python dictionary of log attributes.
+ Python alogger is a small python library to parse resource manager logs.
+ It is used by Karaage. For more information on
+ Karaage, see https://github.com/Karaage-Cluster/karaage, or the documentation
+ at http://karaage.readthedocs.org/
