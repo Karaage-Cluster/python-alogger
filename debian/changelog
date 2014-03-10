@@ -1,3 +1,11 @@
+python-alogger (2.1.6-1) unstable; urgency=low
+
+  * Update python packaging.
+  * Update information.
+  * No functional changes.
+
+ -- Brian May <bam@debian.org>  Tue, 11 Mar 2014 09:31:19 +1100
+
 python-alogger (2.1.5-1) unstable; urgency=low
 
   * Update Debian packaging.
