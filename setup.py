@@ -27,7 +27,7 @@ setup(
     version = version,
     url = 'https://github.com/Karaage-Cluster/python-alogger',
     author = 'Brian May',
-    author_email = 'brian@vpac.org',
+    author_email = 'brian@v3.org.au',
     description = 'Small python library to parse resource manager logs',
     packages = find_packages(),
     license = "GPL3+",
