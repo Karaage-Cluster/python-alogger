@@ -52,11 +52,15 @@ def slurm_to_dict(line):
     data = {}
     formatted_data = {}
     # break up line into a temp dictionary
+    last_key = False
     for d in raw_data:
         try:
             key, value = d.split('=')
             data[key] = value
+            last_key = key
         except ValueError:
+            if last_key:
+                data[last_key] = "%s %s" % (data[last_key], d)
             continue
     # Note that the order these are done in is important !
     formatted_data['jobid'] = data['JobId']
