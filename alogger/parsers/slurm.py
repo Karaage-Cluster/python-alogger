@@ -1,5 +1,27 @@
 import datetime
 import time
+def slurm_suffix_to_megabytes(memory_string):
+
+    return slurm_suffix(memory_string) / 1024 / 1024
+
+
+def slurm_suffix_to_kilobytes(memory_string):
+
+    return slurm_suffix(memory_string) / 1024
+
+
+def slurm_suffix(memory_string):
+
+    if memory_string.endswith('K'):
+        return int(float(memory_string[:-1]) * 1024)
+    elif memory_string.endswith('M'):
+        return int(float(memory_string[:-1]) * 1024 * 1024)
+    elif memory_string.endswith('G'):
+        return int(float(memory_string[:-1]) * 1024 * 1024 * 1024)
+    elif memory_string.endswith('T'):
+        return int(float(memory_string[:-1]) * 1024 * 1024 * 1024 * 1024)
+    else:
+        return int(memory_string)
 
 #  Maybe there is some isomething in datetime that takes a ISO std string but I cannot find it, DRB.
 def DateTime_from_String(datetimeSt):
@@ -94,11 +116,30 @@ def slurm_to_dict(line):
         formatted_data['exit_status'] = 0 # Watch out, Sam says dbase expects an int !!!
 
     formatted_data['queue'] = data['Partition']
-    formatted_data['mem'] = 0
     formatted_data['vmem'] = 0
-    formatted_data['list_mem'] = 0
+    if 'MinMemoryCPU' in data:
+        formatted_data['list_pmem'] = slurm_suffix_to_megabytes(data['MinMemoryCPU'])
+    else:
+        formatted_data['list_pmem'] = 0
+
+    if 'MinMemoryNode' in data:
+        formatted_data['list_mem'] = slurm_suffix_to_megabytes(data['MinMemoryNode'])
+    else:
+        formatted_data['list_mem'] = 0
+
+    if 'ReqMem' in data:
+        if data['ReqMem'].endswith('c'):
+            formatted_data['list_pmem'] = slurm_suffix_to_megabytes(data['ReqMem'][:-1])
+        elif data['ReqMem'].endswith('n'):
+            formatted_data['list_mem'] = slurm_suffix_to_megabytes(data['ReqMem'][:-1])
+        else:
+            print "Weird formatting of ReqMem"
+
+    if 'MaxVMSize' in data:
+        formatted_data['mem'] = slurm_suffix_to_kilobytes(data['MaxVMSize'])
+    else:
+        formatted_data['mem'] = 0
     formatted_data['list_vmem'] = 0
-    formatted_data['list_pmem'] = 0
     formatted_data['list_pvmem'] = 0
     formatted_data['etime'] = formatted_data['qtime']
     # Things we don't seem to have available, would like qtime and est_wall_time
