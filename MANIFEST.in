@@ -3,5 +3,5 @@ include *.rst
 include *.py
 include MANIFEST.in
 recursive-include alogger *.py
+recursive-include alogger/tests/examples *
 recursive-include legacy *
-recursive-include tests *

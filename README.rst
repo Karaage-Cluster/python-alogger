@@ -13,7 +13,7 @@ Format          Status
 Torque/PBS      Used in production
 Slurm           Used by 3rd party
 Sun Grid Engine Initial design
-Windows HPC     Initial design
+Windows HPC     Broken
 =============== ==================
 
 All information on python-alogger is currently located on the `github site

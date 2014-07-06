@@ -5,3 +5,7 @@ export PYBUILD_NAME=alogger
 
 %:
 	dh $@ --with python2,python3 --buildsystem=pybuild
+
+.PHONY: override_dh_auto_test
+override_dh_auto_test:
+	./run_tests.sh

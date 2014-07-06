@@ -8,9 +8,11 @@ project       | string   | pid
 est_wall_time | int      | estimated wall time
 act_wall_time | int      | actual wall time
 cpu_usage     | int      | CPU usage in seconds
-queue         | datetime | 
-ctime         | datetime | the time in seconds when the job was Created (first submitted)
-qtime         | datetime | the time in seconds when the job was Queued into the current queue
+queue         | datetime |
+ctime         | datetime | the time in seconds when the job
+              |          | was Created (first submitted)
+qtime         | datetime | the time in seconds when the job
+              |          | was Queued into the current queue
 etime         | datetime | time in seconds when the job became Eligible to run
 start         | datetime | the time in seconds when job execution Started
 jobid         | string   | Expected to also have host name
@@ -33,8 +35,3 @@ finally, it finishes, one way or another, thats "start" + "act_wall_time"
 If queue is light, etime can equal qtime, but not if the job is blocked.
 
 """
-
-from torque import pbs_to_dict
-from sge import sge_to_dict
-from slurm import slurm_to_dict
-from winhpc import winhpc_to_dict

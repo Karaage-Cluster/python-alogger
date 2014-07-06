@@ -14,24 +14,3 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with alogger-ng  If not, see <http://www.gnu.org/licenses/>.
-
-import logging
-logger = logging.getLogger(__name__)
-
-
-def log_to_dict(line, LOG_TYPE):
-
-    if LOG_TYPE == 'PBS':
-        from alogger.parsers.torque import pbs_to_dict as line_to_dict
-
-    elif LOG_TYPE == 'SGE':
-        from alogger.parsers.sge import sge_to_dict as line_to_dict
-    elif LOG_TYPE == 'SLURM':
-        from alogger.parsers.slurm import slurm_to_dict as line_to_dict
-    elif LOG_TYPE == 'WINHPC':
-        from alogger.parsers.winhpc import winhpc_to_dict as line_to_dict
-    else:
-        logger.error('Cannot find parser for log type: %s' % LOG_TYPE)
-        raise KeyError
-
-    return line_to_dict(line)

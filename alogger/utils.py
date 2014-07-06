@@ -21,7 +21,8 @@ alogger-ng utils
 """
 
 import re
-
+import logging
+logger = logging.getLogger(__name__)
 
 
 def print_error(line_no, message):
@@ -31,30 +32,29 @@ def print_error(line_no, message):
     print('Line: %s --- %s' % (line_no, message))
 
 
-
 def get_in_seconds(time):
     """
     Takes a string in format HH:MM:SS
     Note hours can be more than 2 digits
 
     if greater than 3 years
-    
+
     returns the time in seconds
     """
     hours, minutes, seconds = time.split(':')
 
-    #26280 = 3 years in hours
+    # 26280 = 3 years in hours
     if int(hours) > 26280:
         raise ValueError
 
-    total = int( (int(hours)*60*60) + (int(minutes)*60) + int(seconds) )
+    total = int((int(hours)*60*60) + (int(minutes)*60) + int(seconds))
 
     return total
 
 
 def get_mem_in_kb(memory_string):
     # Strip kb or b etc. from end of mem entries
-    #Example imput 304kb or 322b
+    # Example imput 304kb or 322b
     mem_re = re.compile('([0-9]*)([[a-zA-Z]*)')
     memory, unit = mem_re.match(memory_string).groups()
     memory = int(memory)
@@ -69,9 +69,9 @@ def get_mem_in_kb(memory_string):
     elif unit == 'tb':
         return memory * 1024 * 1024 * 1024
     else:
-        logging.error('Failed to parse memory value: %s' % memory_string)
+        logger.error('Failed to parse memory value: %s' % memory_string)
         raise ValueError
-        
-                      
+
+
 def get_mem_in_mb(memory_string):
     return get_mem_in_kb(memory_string) / 1024

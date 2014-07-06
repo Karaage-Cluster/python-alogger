@@ -1,5 +1,8 @@
 #! /usr/bin/env python
 
+# Anyone using this code as is deserves to be shot. In the left foot.
+# Repeatedly.
+
 """
 
 To Configure this program see alogger-ng.cfg
@@ -8,13 +11,13 @@ To customise this to read a different log format
 just implement a method like pbs_to_dict (see below)
 
 """
-MAX_JOB_LENGTH = 94608000 # 3 years
+MAX_JOB_LENGTH = 94608000  # 3 years
 
 import sys
 import MySQLdb
 import datetime
 
-import ConfigParser, os
+import ConfigParser
 import getopt
 
 try:
@@ -48,10 +51,12 @@ except:
     print "Failed to specify all options in config file"
     sys.exit(2)
 
+
 """
 Assumes the file name is in the format YYYYMMDD
 
 """
+
 
 def print_error(file, date, message):
     """
@@ -69,17 +74,19 @@ def get_user_account(conn, username, machine_cat_id):
 
     """
 
-    SQL = "SELECT * FROM user_account WHERE username = '%s' AND machine_category_id = '%s'" % (username, machine_cat_id)
+    SQL = "SELECT * FROM user_account " \
+        "WHERE username = '%s' AND machine_category_id = '%s'" \
+        % (username, machine_cat_id)
 
     cursor = conn.cursor(MySQLdb.cursors.DictCursor)
     cursor.execute(SQL)
     rows = cursor.fetchall()
     cursor.close()
-    if len(rows) == 1:   
+    if len(rows) == 1:
         return rows[0]
 
     raise LookupError
-        
+
 
 def get_machine(conn, machine_name):
     """
@@ -89,17 +96,16 @@ def get_machine(conn, machine_name):
     """
 
     SQL = "SELECT * FROM machine WHERE name = '%s'" % machine_name
-    
+
     cursor = conn.cursor(MySQLdb.cursors.DictCursor)
     cursor.execute(SQL)
     rows = cursor.fetchall()
     cursor.close()
     if len(rows) == 1:
-        
         return rows[0]
 
     else:
-       raise LookupError
+        raise LookupError
 
 
 def get_in_seconds(time):
@@ -108,16 +114,16 @@ def get_in_seconds(time):
     Note hours can be more than 2 digits
 
     if greater than 3 years
-    
+
     returns the time in seconds
     """
     hours, minutes, seconds = time.split(':')
 
-    #26280 = 3 years in hours
+    # 26280 = 3 years in hours
     if int(hours) > 26280:
         raise ValueError
 
-    total = int( (int(hours)*60*60) + (int(minutes)*60) + int(seconds) )
+    total = int((int(hours)*60*60) + (int(minutes)*60) + int(seconds))
 
     return total
 
@@ -134,32 +140,32 @@ def get_project(conn, data, default_project):
         cursor.close()
         if len(rows) == 1:
             return project_id
-                    
+
     # Need to find default project
     project_id = default_project
     if project_id is not None:
         return project_id
-   
+
     raise ValueError
 
 
 def pbs_to_dict(line):
     """
     Parses a PBS log file line into a python dict
-    
+
     raises KeyError when line not valid
     raises ValueError when time over 3 years
 
     """
-    
+
     # Split line into parts, only care about raw_data
     date, random, job_num, raw_data = line.split(';')
-    
+
     raw_data = raw_data.split(' ')
-    
+
     data = {}
     formatted_data = {}
-    
+
     # Make into a dict using values key=value
     for d in raw_data:
         try:
@@ -169,54 +175,56 @@ def pbs_to_dict(line):
             continue
 
     # Check to see if line worth proccessing
-    if not 'resources_used.walltime' in data:
+    if 'resources_used.walltime' not in data:
         raise KeyError
-
 
     formatted_data['user'] = data['user']
     if 'account' in data:
         formatted_data['project'] = data['account']
 
-    
     try:
-        formatted_data['est_wall_time'] = int(get_in_seconds(data['Resource_List.walltime']))
-        formatted_data['act_wall_time'] = int(get_in_seconds(data['resources_used.walltime']))
+        formatted_data['est_wall_time'] \
+            = int(get_in_seconds(data['Resource_List.walltime']))
+        formatted_data['act_wall_time'] \
+            = int(get_in_seconds(data['resources_used.walltime']))
     except:
         raise ValueError
-        
 
     cores = data['exec_host'].count('/')
     formatted_data['cpu_usage'] = cores * formatted_data['act_wall_time']
-    
+
     formatted_data['queue'] = data['queue']
 
     # Strip kb fro end of mem entries
     # No mem field for wembley-hp
     try:
-        formatted_data['mem'] = int(data['resources_used.mem'][:len(data['resources_used.mem'])-2])
+        formatted_data['mem'] = \
+            int(data['resources_used.mem'][:len(data['resources_used.mem'])-2])
     except:
         formatted_data['mem'] = 0
-    formatted_data['vmem'] = int(data['resources_used.vmem'][:len(data['resources_used.vmem'])-2])
-    
-    formatted_data['ctime'] = datetime.datetime.fromtimestamp(int(data['ctime'])).isoformat(' ')
-    formatted_data['qtime'] = datetime.datetime.fromtimestamp(int(data['qtime'])).isoformat(' ')
-    formatted_data['etime'] = datetime.datetime.fromtimestamp(int(data['etime'])).isoformat(' ')
-    formatted_data['start'] = datetime.datetime.fromtimestamp(int(data['start'])).isoformat(' ')
+
+    formatted_data['vmem'] = \
+        int(data['resources_used.vmem'][:len(data['resources_used.vmem'])-2])
+
+    fromtimestamp = datetime.datetime.fromtimestamp
+    formatted_data['ctime'] = fromtimestamp(int(data['ctime'])).isoformat(' ')
+    formatted_data['qtime'] = fromtimestamp(int(data['qtime'])).isoformat(' ')
+    formatted_data['etime'] = fromtimestamp(int(data['etime'])).isoformat(' ')
+    formatted_data['start'] = fromtimestamp(int(data['start'])).isoformat(' ')
 
     return formatted_data
-                        
+
 
 def parse_logs(filename):
     """
     filename format YYYYMMDD
-    
     """
 
-    conn = MySQLdb.connect (
-        host = DB_HOST,
-        user = DB_USER,
-        passwd = DB_PASSWD,
-        db = DB_NAME)
+    conn = MySQLdb.connect(
+        host=DB_HOST,
+        user=DB_USER,
+        passwd=DB_PASSWD,
+        db=DB_NAME)
 
     count = fail = skip = 0
     line_no = 0
@@ -224,18 +232,18 @@ def parse_logs(filename):
     try:
         machine = get_machine(conn, MACHINE_NAME)
     except:
-        print_error(filename, line_no, "Couldn't find machine named: %s" % MACHINE_NAME)
+        print_error(
+            filename, line_no,
+            "Couldn't find machine named: %s" % MACHINE_NAME)
         sys.exit(1)
-        
 
     # Try and open the log file
     try:
         f = open('%s%s' % (LOG_DIR, filename), 'r')
     except IOError:
-        #print "Couldn't open file: %s" % '%s%s' % (LOG_DIR, filename)
+        # print "Couldn't open file: %s" % '%s%s' % (LOG_DIR, filename)
         sys.exit(1)
 
-    
     for line in f:
         line_no = line_no + 1
         try:
@@ -251,39 +259,52 @@ def parse_logs(filename):
                 conn, data['user'], machine['category_id'])
         except:
             # Couldn't find user account - Assign to user 'Unknown_User'
-            SQL = "SELECT * FROM user_account WHERE username = 'unknown_user' AND machine_category_id = '%s'" % machine['category_id']
+            SQL = "SELECT * FROM user_account " \
+                "WHERE username = 'unknown_user' " \
+                "AND machine_category_id = '%s'" % machine['category_id']
             cursor = conn.cursor(MySQLdb.cursors.DictCursor)
             cursor.execute(SQL)
             rows = cursor.fetchall()
             cursor.close()
             user_account = rows[0]
-            print_error(filename, line_no, "Couldn't find user account for username=%s and machine_category_id=%i" % (data['user'], machine['category_id']))
+            print_error(
+                filename, line_no,
+                "Couldn't find user account for "
+                "username=%s and machine_category_id=%i"
+                % (data['user'], machine['category_id']))
             fail = fail + 1
 
-        
         # Get project id
         try:
-            project_id = get_project(conn, data, user_account['default_project_id'])
+            project_id = get_project(
+                conn, data, user_account['default_project_id'])
         except:
             # Couldn't find project - Assign to 'Unknown_Project'
             if 'project' in data:
-                print_error(filename, line_no, "Couldn't find project: %s" % data['project'])
+                print_error(
+                    filename, line_no,
+                    "Couldn't find project: %s" % data['project'])
             else:
-                print_error(filename, line_no, "Couldn't find default project for username=%s and machine_category_id=%i" % (data['user'], machine['category_id']))
+                print_error(
+                    filename, line_no,
+                    "Couldn't find default project for "
+                    "username=%s and machine_category_id=%i"
+                    % (data['user'], machine['category_id']))
             project_id = 'Unknown_Project'
             fail = fail + 1
-        
 
         # Everything is good so add entry
         username = data['user']
         user_id = int(user_account['id'])
         machine_id = int(machine['id'])
-        date = datetime.date(int(filename[:4]), int(filename[4:6]), int(filename[6:]))
-        #date = datetime.datetime.strptime(filename, '%Y%m%d')
+        date = datetime.date(
+            int(filename[:4]), int(filename[4:6]), int(filename[6:]))
+        # date = datetime.datetime.strptime(filename, '%Y%m%d')
         cpu_usage = data['cpu_usage']
         est_wall_time = data['est_wall_time']
-        act_wall_time = data['act_wall_time']
-        
+        # undefined variable, se we make it up and keep PEP8 happy
+        act_wall_time = 99
+
         queue = data['queue']
         mem = data['mem']
         vmem = data['vmem']
@@ -295,24 +316,31 @@ def parse_logs(filename):
         try:
             cursor = conn.cursor()
             cursor.execute(
-                "INSERT INTO cpu_job (user_id, project_id, machine_id, date, cpu_usage, queue_id, mem, vmem, ctime, qtime, etime, start, act_wall_time, est_wall_time, username) VALUES ('%i', '%s', '%i', '%s', '%i', '%s', '%i', '%i', '%s', '%s', '%s', '%s', '%i', '%i', '%s')" % (user_id, project_id, machine_id, date, cpu_usage, queue, mem, vmem, ctime, qtime, etime, start, act_wall_time, est_wall_time, username)
+                "INSERT INTO cpu_job (user_id, project_id, machine_id, date, "
+                "cpu_usage, queue_id, mem, vmem, ctime, qtime, etime, start, "
+                "act_wall_time, est_wall_time, username) "
+                "VALUES ('%i', '%s', '%i', '%s', '%i', '%s', '%i', '%i', "
+                "'%s', '%s', '%s', '%s', '%i', '%i', '%s')"
+                % (user_id, project_id, machine_id, date, cpu_usage,
+                    queue, mem, vmem, ctime, qtime, etime, start,
+                    act_wall_time, est_wall_time, username)
             )
             count = count + 1
 
             cursor.close()
             conn.commit()
-            
+
         except:
-            print_error(filename, line_no, "Failed to insert this line - %s" % data)
+            print_error(
+                filename, line_no, "Failed to insert this line - %s" % data)
             fail = fail + 1
             continue
-        
+
     conn.close()
 
-    #print 'Inserted : %i' % count
-    #print 'Failed   : %i' % fail
-    #print 'Skiped   : %i' % skip
-        
+    # print 'Inserted : %i' % count
+    # print 'Failed   : %i' % fail
+    # print 'Skiped   : %i' % skip
 
 
 def read_all():
@@ -340,8 +368,5 @@ if __name__ == "__main__":
 
     parse_logs(filename)
 
-    #read_all()
-    
+    # read_all()
     sys.exit(0)
-
-

@@ -1,5 +1,9 @@
 import datetime
 import time
+import logging
+logger = logging.getLogger(__name__)
+
+
 def slurm_suffix_to_megabytes(memory_string):
 
     return slurm_suffix(memory_string) / 1024 / 1024
@@ -23,10 +27,12 @@ def slurm_suffix(memory_string):
     else:
         return int(memory_string)
 
-#  Maybe there is some isomething in datetime that takes a ISO std string but I cannot find it, DRB.
+
+#  Maybe there is some isomething in datetime that takes a ISO std string but I
+#  cannot find it, DRB.
 def DateTime_from_String(datetimeSt):
-    """Gets a date time string like 2010-09-10T15:54:18 and retuns a datetime object
-        raises a ValueError if it all goes wrong """
+    """Gets a date time string like 2010-09-10T15:54:18 and retuns a datetime
+    object raises a ValueError if it all goes wrong """
     DayTime = datetimeSt.split('T')
     if len(DayTime) != 2:
         raise ValueError
@@ -49,21 +55,25 @@ def DateTime_from_String(datetimeSt):
     )
     return dt
 
+
 def SecondsFromSlurmTime(timeString):
-    """This function could be merged into get_in_seconds above but its here to leave
-       clear break between the Slurm addition and original.
-       It deals with the fact that slurm may return est_wall_time as
-       00nnn, 00:00:00 or 0-00:00:00.
-    """
+    """This function could be merged into get_in_seconds above but its here to
+    leave clear break between the Slurm addition and original.  It deals with
+    the fact that slurm may return est_wall_time as 00nnn, 00:00:00 or
+    0-00:00:00.  """
     if timeString.find(':') == -1:              # straight second format
         return int(timeString)
     if timeString.find('-') == -1:              # must be a (eg) 10:00:00 case
-        Seconds = ((int(timeString.split(':')[0]) * 3600) + ((int(timeString.split(':')[1]) * 60)) + int(timeString.split(':')[2]))
+        Seconds = (
+            (int(timeString.split(':')[0]) * 3600)
+            + ((int(timeString.split(':')[1]) * 60))
+            + int(timeString.split(':')[2])
+        )
     else:
         DayRest = timeString.split('-')
-        Seconds = int(DayRest[0]) * 3600 * 24 
+        Seconds = int(DayRest[0]) * 3600 * 24
         Seconds = Seconds + (int(DayRest[1].split(':')[0]) * 3600)
-        Seconds = Seconds + ((int(DayRest[1].split(':')[1]) * 60))  
+        Seconds = Seconds + ((int(DayRest[1].split(':')[1]) * 60))
         Seconds = Seconds + int(DayRest[1].split(':')[2])
     return Seconds
 
@@ -84,56 +94,83 @@ def slurm_to_dict(line):
             if last_key:
                 data[last_key] = "%s %s" % (data[last_key], d)
             continue
+
     # Note that the order these are done in is important !
     formatted_data['jobid'] = data['JobId']
     formatted_data['cores'] = int(data['ProcCnt'])
-    formatted_data['user']  = data['UserId'][:data['UserId'].find('(')]         # 'mike(543)' - remove the uid in brackets.
+
+    # 'mike(543)' - remove the uid in brackets.
+    formatted_data['user'] = data['UserId'][:data['UserId'].find('(')]
     formatted_data['project'] = data['Account']
 
     # If SubmitTime is invalid and non-existant use StartTime instead.
     try:
-        formatted_data['qtime'] = DateTime_from_String(data['SubmitTime']).isoformat(' ')       # '2010-07-30T15:34:39'  
-        formatted_data['ctime'] = DateTime_from_String(data['SubmitTime']).isoformat(' ')   # for practical purposes, same as etime here.
+        # '2010-07-30T15:34:39'
+        formatted_data['qtime'] = \
+            DateTime_from_String(data['SubmitTime']).isoformat(' ')
+        # for practical purposes, same as etime here.
+        formatted_data['ctime'] = \
+            DateTime_from_String(data['SubmitTime']).isoformat(' ')
     except (ValueError, KeyError):
-        formatted_data['qtime'] = DateTime_from_String(data['StartTime']).isoformat(' ')
-        formatted_data['ctime'] = DateTime_from_String(data['StartTime']).isoformat(' ')
-                                                                                # old records don't have a submit time time.
+        # old records don't have a submit time time.
+        formatted_data['qtime'] = \
+            DateTime_from_String(data['StartTime']).isoformat(' ')
+        formatted_data['ctime'] = \
+            DateTime_from_String(data['StartTime']).isoformat(' ')
 
-    # If data['StartTime'] or data['EndTime'] is bad or not given, the following statements will fail
-    formatted_data['start'] = DateTime_from_String(data['StartTime']).isoformat(' ')
-    # formatted_data['etime']                                                   # don't care   
-    formatted_data['act_wall_time'] = int(time.mktime(DateTime_from_String(data['EndTime']).timetuple())) - int(time.mktime(DateTime_from_String(data['StartTime']).timetuple()))
-    formatted_data['record_time'] = DateTime_from_String(data['StartTime']).isoformat(' ')
-    formatted_data['cpu_usage'] = formatted_data['act_wall_time'] * formatted_data['cores']
-    formatted_data['jobname'] = data['Name']                                    # Note that this is the name of the script, not --jobname
+    # If data['StartTime'] or data['EndTime'] is bad or not given, the
+    # following statements will fail
+    formatted_data['start'] = \
+        DateTime_from_String(data['StartTime']).isoformat(' ')
+    # formatted_data['etime']  # don't care
+    formatted_data['act_wall_time'] = \
+        int(time.mktime(DateTime_from_String(data['EndTime']).timetuple())) \
+        - int(time.mktime(DateTime_from_String(data['StartTime']).timetuple()))
+    formatted_data['record_time'] = \
+        DateTime_from_String(data['StartTime']).isoformat(' ')
+    formatted_data['cpu_usage'] = \
+        formatted_data['act_wall_time'] * formatted_data['cores']
+
+    # Note that this is the name of the script, not --jobname
+    formatted_data['jobname'] = data['Name']
     try:
-        formatted_data['est_wall_time'] = SecondsFromSlurmTime(data['TimeLimit'])       # might be 5-00:00:00 or 18:00:00
+        # might be 5-00:00:00 or 18:00:00
+        formatted_data['est_wall_time'] = \
+            SecondsFromSlurmTime(data['TimeLimit'])
     except ValueError:
-       formatted_data['est_wall_time'] = -1                                     # Sometimes returns 'UNLIMITED' ! 
+        # Sometimes returns 'UNLIMITED' !
+        formatted_data['est_wall_time'] = -1
     try:
-        formatted_data['exit_status'] = int(data['JobState'])                           # might be "COMPLETED", "CANCELLED", "TIMEOUT" and may have multiple entries per line !
+        # might be "COMPLETED", "CANCELLED", "TIMEOUT" and may have multiple
+        # entries per line !
+        formatted_data['exit_status'] = int(data['JobState'])
     except ValueError:
-        formatted_data['exit_status'] = 0 # Watch out, Sam says dbase expects an int !!!
+        # Watch out, Sam says dbase expects an int !!!
+        formatted_data['exit_status'] = 0
 
     formatted_data['queue'] = data['Partition']
     formatted_data['vmem'] = 0
     if 'MinMemoryCPU' in data:
-        formatted_data['list_pmem'] = slurm_suffix_to_megabytes(data['MinMemoryCPU'])
+        formatted_data['list_pmem'] = \
+            slurm_suffix_to_megabytes(data['MinMemoryCPU'])
     else:
         formatted_data['list_pmem'] = 0
 
     if 'MinMemoryNode' in data:
-        formatted_data['list_mem'] = slurm_suffix_to_megabytes(data['MinMemoryNode'])
+        formatted_data['list_mem'] = \
+            slurm_suffix_to_megabytes(data['MinMemoryNode'])
     else:
         formatted_data['list_mem'] = 0
 
     if 'ReqMem' in data:
         if data['ReqMem'].endswith('c'):
-            formatted_data['list_pmem'] = slurm_suffix_to_megabytes(data['ReqMem'][:-1])
+            formatted_data['list_pmem'] = \
+                slurm_suffix_to_megabytes(data['ReqMem'][:-1])
         elif data['ReqMem'].endswith('n'):
-            formatted_data['list_mem'] = slurm_suffix_to_megabytes(data['ReqMem'][:-1])
+            formatted_data['list_mem'] = \
+                slurm_suffix_to_megabytes(data['ReqMem'][:-1])
         else:
-            print("Weird formatting of ReqMem")
+            logger.error("Weird formatting of ReqMem")
 
     if 'MaxVMSize' in data:
         formatted_data['mem'] = slurm_suffix_to_kilobytes(data['MaxVMSize'])
@@ -142,7 +179,8 @@ def slurm_to_dict(line):
     formatted_data['list_vmem'] = 0
     formatted_data['list_pvmem'] = 0
     formatted_data['etime'] = formatted_data['qtime']
-    # Things we don't seem to have available, would like qtime and est_wall_time
-    # mem, qtime, list_pmem, list_pvmem, queue, vmem, list_vmem, jobname. 
-    # Note that "out of the box" slurm does not report on Queue or Creation time.
-    return formatted_data               
+    # Things we don't seem to have available, would like qtime and
+    # est_wall_time mem, qtime, list_pmem, list_pvmem, queue, vmem, list_vmem,
+    # jobname.  Note that "out of the box" slurm does not report on Queue or
+    # Creation time.
+    return formatted_data

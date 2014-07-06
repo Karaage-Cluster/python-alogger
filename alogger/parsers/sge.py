@@ -28,9 +28,9 @@ project       | string   | pid
 est_wall_time | int      | estimated wall time
 act_wall_time | int      | actual wall time
 cpu_usage     | int      | CPU usage in seconds
-queue         | datetime | 
-ctime         | datetime | 
-qtime         | datetime | 
+queue         | datetime |
+ctime         | datetime |
+qtime         | datetime |
 etime         | datetime |
 start         | datetime |
 jobid	      | string   |
@@ -52,51 +52,65 @@ Raises value error if funky wall time
 
 import datetime
 import logging
+logger = logging.getLogger(__name__)
 
 
 def sge_to_dict(line):
     """
     Parses a SGE accounting log file line into a python dict
-    
+
     raises KeyError when line not valid
     raises ValueError when time over 3 years
 
     """
     try:
-    
-        queue, hostname, group, username, jobname, jobid, account, priority, qsub_time, start_time, end_time, failed, exit_status, ru_wallclock, ru_utime, ru_stime, ru_maxrss, ru_ixrss, ru_ismrss, ru_idrss,  ru_isrss, ru_minflt, ru_majflt, ru_nswap, ru_inblock, ru_oublock, ru_msgsnd, ru_msgrcv, ru_nsignals, ru_nvcsw, ru_nivcsw, project, department, granted_pe, slots, UNKNOWN, cpu, mem, UNKNOWN, command_line_arguments, UNKNOWN, UNKNOWN, maxvmem_bytes = line.split(':')
+        queue, hostname, group, username, jobname, jobid, account, priority, \
+            qsub_time, start_time, end_time, failed, exit_status, \
+            ru_wallclock, ru_utime, ru_stime, ru_maxrss, ru_ixrss, \
+            ru_ismrss, ru_idrss,  ru_isrss, ru_minflt, ru_majflt, \
+            ru_nswap, ru_inblock, ru_oublock, ru_msgsnd, ru_msgrcv, \
+            ru_nsignals, ru_nvcsw, ru_nivcsw, project, department, \
+            granted_pe, slots, UNKNOWN, cpu, mem, UNKNOWN, \
+            command_line_arguments, UNKNOWN, UNKNOWN, \
+            maxvmem_bytes = line.split(':')
     except:
-        a1, a2, queue, hostname, group, username, jobname, jobid, account, priority, qsub_time, start_time, end_time, failed, exit_status, ru_wallclock, ru_utime, ru_stime, ru_maxrss, ru_ixrss, ru_ismrss, ru_idrss,  ru_isrss, ru_minflt, ru_majflt, ru_nswap, ru_inblock, ru_oublock, ru_msgsnd, ru_msgrcv, ru_nsignals, ru_nvcsw, ru_nivcsw, project, department, granted_pe, slots, UNKNOWN, cpu, mem, UNKNOWN, command_line_arguments, UNKNOWN, UNKNOWN, maxvmem_bytes = line.split(':')
+        a1, a2, queue, hostname, group, username, jobname, jobid, account, \
+            priority, qsub_time, start_time, end_time, failed, exit_status, \
+            ru_wallclock, ru_utime, ru_stime, ru_maxrss, ru_ixrss, ru_ismrss, \
+            ru_idrss,  ru_isrss, ru_minflt, ru_majflt, ru_nswap, ru_inblock, \
+            ru_oublock, ru_msgsnd, ru_msgrcv, ru_nsignals, ru_nvcsw, \
+            ru_nivcsw, project, department, granted_pe, slots, UNKNOWN, \
+            cpu, mem, UNKNOWN, command_line_arguments, UNKNOWN, UNKNOWN, \
+            maxvmem_bytes = line.split(':')
 
-    data = {}
     formatted_data = {}
-    
+
     formatted_data['jobid'] = jobid
 
-    formatted_data['date'] = datetime.datetime.fromtimestamp(long(end_time)).isoformat(' ')
+    formatted_data['date'] = \
+        datetime.datetime.fromtimestamp(int(end_time)).isoformat(' ')
     formatted_data['user'] = username
 
-    formatted_data['jobname'] = jobname 
+    formatted_data['jobname'] = jobname
     try:
         formatted_data['est_wall_time'] = None
         formatted_data['act_wall_time'] = int(ru_wallclock)
     except:
-        logging.error('Failed to parse act_wall_time value: %s' % ru_wallclock)
+        logger.error('Failed to parse act_wall_time value: %s' % ru_wallclock)
         raise ValueError
-        
 
     formatted_data['cores'] = int(slots)
-    formatted_data['cpu_usage'] = formatted_data['cores'] * formatted_data['act_wall_time']
-    
+    formatted_data['cpu_usage'] = \
+        formatted_data['cores'] * formatted_data['act_wall_time']
+
     formatted_data['queue'] = queue
 
-    formatted_data['start'] = datetime.datetime.fromtimestamp(long(qsub_time)).isoformat(' ')
+    formatted_data['start'] = \
+        datetime.datetime.fromtimestamp(int(qsub_time)).isoformat(' ')
     formatted_data['exit_status'] = exit_status
 
-    logging.debug("Parsed following data")
-    for k,v in formatted_data.items():
-        logging.debug("%s = %s" % (k, v))
+    logger.debug("Parsed following data")
+    for k, v in formatted_data.items():
+        logger.debug("%s = %s" % (k, v))
 
     return formatted_data
-
-
