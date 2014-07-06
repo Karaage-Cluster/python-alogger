@@ -1,5 +1,7 @@
 #!/usr/bin/make -f
 # -*- makefile -*-
 
+export PYBUILD_NAME=alogger
+
 %:
-	dh $@ --with python2
+	dh $@ --with python2,python3 --buildsystem=pybuild
