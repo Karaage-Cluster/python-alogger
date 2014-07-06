@@ -59,8 +59,7 @@ def sge_to_dict(line):
     """
     Parses a SGE accounting log file line into a python dict
 
-    raises KeyError when line not valid
-    raises ValueError when time over 3 years
+    raises ValueError when line not valid
 
     """
     try:
