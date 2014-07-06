@@ -133,7 +133,7 @@ def slurm_to_dict(line):
         elif data['ReqMem'].endswith('n'):
             formatted_data['list_mem'] = slurm_suffix_to_megabytes(data['ReqMem'][:-1])
         else:
-            print "Weird formatting of ReqMem"
+            print("Weird formatting of ReqMem")
 
     if 'MaxVMSize' in data:
         formatted_data['mem'] = slurm_suffix_to_kilobytes(data['MaxVMSize'])

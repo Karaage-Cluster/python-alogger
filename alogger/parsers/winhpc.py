@@ -81,8 +81,8 @@ def winhpc_to_dict(line):
             data[key] = value
         except:
             continue
-    print jobid
-    print data
+    print(jobid)
+    print(data)
     # Check to see if line worth proccessing
     if 'REJMESSAGE' in data:
         return

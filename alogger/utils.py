@@ -28,7 +28,7 @@ def print_error(line_no, message):
     """
     Method called when error occurs
     """
-    print 'Line: %s --- %s' % (line_no, message)
+    print('Line: %s --- %s' % (line_no, message))
 
 
 
