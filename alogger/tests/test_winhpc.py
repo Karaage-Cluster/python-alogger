@@ -16,18 +16,10 @@
 # along with python-alogger  If not, see <http://www.gnu.org/licenses/>.
 
 import unittest
-from alogger import log_to_dict
-import os.path
+from .base import Base
 
 
-class TestWinHPC(unittest.TestCase):
-
-    @unittest.skip("Win HPC support is broken")
-    def test_log_to_dict(self):
-        directory = os.path.abspath(os.path.split(__file__)[0])
-        fd = open(os.path.join(directory, 'examples/winhpc'))
-        lines = fd.readlines()
-        fd.close()
-
-        for line in lines:
-            log_to_dict(line, 'WINHPC')
+@unittest.skip("Win HPC support is broken")
+class TestWinHPC(Base, unittest.TestCase):
+    file_prefix = "slurm"
+    log_type = "slurm"

@@ -16,17 +16,9 @@
 # along with python-alogger  If not, see <http://www.gnu.org/licenses/>.
 
 import unittest
-from alogger import log_to_dict
-import os.path
+from .base import Base
 
 
-class TestTorque(unittest.TestCase):
-
-    def test_log_to_dict(self):
-        directory = os.path.abspath(os.path.split(__file__)[0])
-        fd = open(os.path.join(directory, 'examples/torque'))
-        lines = fd.readlines()
-        fd.close()
-
-        for line in lines:
-            log_to_dict(line, 'PBS')
+class TestTorque(Base, unittest.TestCase):
+    file_prefix = "torque"
+    log_type = "PBS"
