@@ -19,7 +19,6 @@ import unittest
 from .base import Base
 
 
-@unittest.skip("Need slurm log file")
 class TestSlurm(Base, unittest.TestCase):
     file_prefix = "slurm"
-    log_type = "slurm"
+    log_type = "SLURM"
