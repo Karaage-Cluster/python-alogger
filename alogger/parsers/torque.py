@@ -57,7 +57,7 @@ logger = logging.getLogger(__name__)
 from alogger.utils import get_in_seconds, get_mem_in_kb, get_mem_in_mb
 
 
-def pbs_to_dict(line):
+def line_to_dict(line):
     """
     Parses a PBS log file line into a python dict
 

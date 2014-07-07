@@ -55,7 +55,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def sge_to_dict(line):
+def line_to_dict(line):
     """
     Parses a SGE accounting log file line into a python dict
 

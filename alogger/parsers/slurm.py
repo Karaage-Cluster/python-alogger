@@ -95,7 +95,7 @@ def SecondsFromSlurmTime(timeString):
     return Seconds
 
 
-def slurm_to_dict(line):
+def line_to_dict(line):
     """Parses a Slurm log file into dictionary"""
     raw_data = line.split(' ')
     data = {}

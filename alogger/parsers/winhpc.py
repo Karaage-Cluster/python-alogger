@@ -55,7 +55,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-def winhpc_to_dict(line):
+def line_to_dict(line):
     """
     Parses a PBS log file line into a python dict
 

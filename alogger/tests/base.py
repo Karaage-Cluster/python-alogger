@@ -15,11 +15,17 @@
 # You should have received a copy of the GNU General Public License
 # along with python-alogger  If not, see <http://www.gnu.org/licenses/>.
 
-from alogger import log_to_dict
+from alogger import log_to_dict, Parser
 import os.path
 import json
+import warnings
 
+
+# disable rebuilding files
 _testing_only = True
+
+# force rebuilding files even if they exist
+_force_rebuild = False
 
 
 class Base(object):
@@ -31,22 +37,52 @@ class Base(object):
         lines = fd.readlines()
         fd.close()
 
+        parser = Parser(self.log_type)
+
         path = os.path.join(directory, 'results', self.file_prefix+".json")
-        if _testing_only or os.path.isfile(path):
+        if _testing_only or (os.path.isfile(path) and not _force_rebuild):
 
             with open(path, "r") as fp:
                 expected_results = json.load(fp)
 
             for line in lines:
-                result = log_to_dict(line, self.log_type)
                 expected_result = expected_results.pop(0)
+
+                # depreciated
+                try:
+                    with warnings.catch_warnings(record=True) as w:
+                        warnings.simplefilter("always")
+                        result = log_to_dict(line, self.log_type)
+                        self.assertEqual(len(w), 1)
+                        self.assertTrue(
+                            issubclass(w[0].category, DeprecationWarning))
+                    self.assertIsNotNone(result)
+                except KeyError:
+                    result = None
+                self.assertEqual(result, expected_result)
+
+                # current
+                result = parser.log_to_dict(line)
                 self.assertEqual(result, expected_result)
 
         else:
             results = []
 
             for line in lines:
-                results.append(log_to_dict(line, self.log_type))
+                try:
+                    with warnings.catch_warnings(record=True) as w:
+                        warnings.simplefilter("always")
+                        result1 = log_to_dict(line, self.log_type)
+                        self.assertEqual(len(w), 1)
+                        self.assertTrue(
+                            issubclass(w[0].category, DeprecationWarning))
+                    self.assertIsNotNone(result1)
+                except KeyError:
+                    result1 = None
+                result2 = parser.log_to_dict(line)
+                self.assertEqual(result1, result2)
+
+                results.append(result1)
 
             with open(path, "w") as fp:
                 json.dump(results, fp, indent=4)
