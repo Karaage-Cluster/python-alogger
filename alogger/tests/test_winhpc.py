@@ -21,5 +21,5 @@ from .base import Base
 
 @unittest.skip("Win HPC support is broken")
 class TestWinHPC(Base, unittest.TestCase):
-    file_prefix = "slurm"
-    log_type = "slurm"
+    file_prefix = "winhpc"
+    log_type = "WINHPC"
