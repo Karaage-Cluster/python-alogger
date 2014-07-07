@@ -23,6 +23,7 @@ fi
 echo ""
 echo "TESTS - Python 2"
 echo "############################"
+export TZ='Australia/Melbourne'
 python2 setup.py test
 if [ ! $? -eq 0 ]
 then
@@ -32,6 +33,7 @@ fi
 echo ""
 echo "TESTS - Python 3"
 echo "############################"
+export TZ='Australia/Melbourne'
 python3 setup.py test
 if [ ! $? -eq 0 ]
 then
