@@ -22,7 +22,7 @@ Description: Small Python library to parse resource manager logs
 
 Package: python3-alogger
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends}
+Depends: ${misc:Depends}, ${python3:Depends}
 Description: Small Python library to parse resource manager logs
  Python alogger is a small Python library to parse resource manager logs.
  It is used by Karaage. For more information on
