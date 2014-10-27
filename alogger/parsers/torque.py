@@ -14,7 +14,8 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with python-alogger  If not, see <http://www.gnu.org/licenses/>.
-
+from __future__ import absolute_import
+from __future__ import unicode_literals
 
 """
 Declare log parsing methods here.
@@ -69,7 +70,7 @@ def line_to_dict(line):
     # Split line into parts, only care about raw_data
     date, random, job_num, raw_data = line.split(';')
 
-    raw_data = raw_data.split(' ')
+    raw_data = raw_data.split(str(' '))
 
     data = {}
     formatted_data = {}
@@ -138,10 +139,14 @@ def line_to_dict(line):
     formatted_data['exit_status'] = data['Exit_status']
 
     fromtimestamp = datetime.datetime.fromtimestamp
-    formatted_data['ctime'] = fromtimestamp(int(data['ctime'])).isoformat(' ')
-    formatted_data['qtime'] = fromtimestamp(int(data['qtime'])).isoformat(' ')
-    formatted_data['etime'] = fromtimestamp(int(data['etime'])).isoformat(' ')
-    formatted_data['start'] = fromtimestamp(int(data['start'])).isoformat(' ')
+    formatted_data['ctime'] = \
+        fromtimestamp(int(data['ctime'])).isoformat(str(' '))
+    formatted_data['qtime'] = \
+        fromtimestamp(int(data['qtime'])).isoformat(str(' '))
+    formatted_data['etime'] = \
+        fromtimestamp(int(data['etime'])).isoformat(str(' '))
+    formatted_data['start'] = \
+        fromtimestamp(int(data['start'])).isoformat(str(' '))
 
     logger.debug("Parsed following data")
     for k, v in formatted_data.items():

@@ -14,7 +14,8 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with python-alogger  If not, see <http://www.gnu.org/licenses/>.
-
+from __future__ import absolute_import
+from __future__ import unicode_literals
 
 """
 Declare log parsing methods here.
@@ -87,7 +88,7 @@ def line_to_dict(line):
     formatted_data['jobid'] = jobid
 
     formatted_data['date'] = \
-        datetime.datetime.fromtimestamp(int(end_time)).isoformat(' ')
+        datetime.datetime.fromtimestamp(int(end_time)).isoformat(str(' '))
     formatted_data['user'] = username
 
     formatted_data['jobname'] = jobname
@@ -105,7 +106,7 @@ def line_to_dict(line):
     formatted_data['queue'] = queue
 
     formatted_data['start'] = \
-        datetime.datetime.fromtimestamp(int(qsub_time)).isoformat(' ')
+        datetime.datetime.fromtimestamp(int(qsub_time)).isoformat(str(' '))
     formatted_data['exit_status'] = exit_status
 
     logger.debug("Parsed following data")

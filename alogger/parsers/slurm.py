@@ -14,6 +14,8 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with python-alogger  If not, see <http://www.gnu.org/licenses/>.
+from __future__ import absolute_import
+from __future__ import unicode_literals
 
 import datetime
 import time
@@ -124,27 +126,27 @@ def line_to_dict(line):
     try:
         # '2010-07-30T15:34:39'
         formatted_data['qtime'] = \
-            DateTime_from_String(data['SubmitTime']).isoformat(' ')
+            DateTime_from_String(data['SubmitTime']).isoformat(str(' '))
         # for practical purposes, same as etime here.
         formatted_data['ctime'] = \
-            DateTime_from_String(data['SubmitTime']).isoformat(' ')
+            DateTime_from_String(data['SubmitTime']).isoformat(str(' '))
     except (ValueError, KeyError):
         # old records don't have a submit time time.
         formatted_data['qtime'] = \
-            DateTime_from_String(data['StartTime']).isoformat(' ')
+            DateTime_from_String(data['StartTime']).isoformat(str(' '))
         formatted_data['ctime'] = \
-            DateTime_from_String(data['StartTime']).isoformat(' ')
+            DateTime_from_String(data['StartTime']).isoformat(str(' '))
 
     # If data['StartTime'] or data['EndTime'] is bad or not given, the
     # following statements will fail
     formatted_data['start'] = \
-        DateTime_from_String(data['StartTime']).isoformat(' ')
+        DateTime_from_String(data['StartTime']).isoformat(str(' '))
     # formatted_data['etime']  # don't care
     formatted_data['act_wall_time'] = \
         int(time.mktime(DateTime_from_String(data['EndTime']).timetuple())) \
         - int(time.mktime(DateTime_from_String(data['StartTime']).timetuple()))
     formatted_data['record_time'] = \
-        DateTime_from_String(data['StartTime']).isoformat(' ')
+        DateTime_from_String(data['StartTime']).isoformat(str(' '))
     formatted_data['cpu_usage'] = \
         formatted_data['act_wall_time'] * formatted_data['cores']
 
