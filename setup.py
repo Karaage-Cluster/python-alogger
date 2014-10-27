@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Copyright 208-2014 VPAC
+# Copyright 2007-2014 VPAC
 #
 # This file is part of python-alogger.
 #
