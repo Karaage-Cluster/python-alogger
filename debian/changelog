@@ -1,3 +1,10 @@
+python-alogger (2.2.1-1) unstable; urgency=low
+
+  * New version.
+  * More tests.
+
+ -- Brian May <bam@debian.org>  Mon, 27 Oct 2014 11:33:35 +1100
+
 python-alogger (2.2.0-1) unstable; urgency=low
 
   * Add Vcs headers.
