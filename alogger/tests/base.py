@@ -22,6 +22,7 @@ import os.path
 import json
 import warnings
 
+from . import examples, results
 
 # disable rebuilding files
 _testing_only = True
@@ -33,15 +34,16 @@ _force_rebuild = False
 class Base(object):
 
     def test_log_to_dict(self):
-        directory = os.path.abspath(os.path.split(__file__)[0])
-        path = os.path.join(directory, 'examples', self.file_prefix+".log")
+        directory = os.path.abspath(os.path.split(examples.__file__)[0])
+        path = os.path.join(directory, self.file_prefix+".log")
         fd = open(path, "r")
         lines = fd.readlines()
         fd.close()
 
         parser = Parser(self.log_type)
 
-        path = os.path.join(directory, 'results', self.file_prefix+".json")
+        directory = os.path.abspath(os.path.split(results.__file__)[0])
+        path = os.path.join(directory, self.file_prefix+".json")
         if _testing_only or (os.path.isfile(path) and not _force_rebuild):
 
             with open(path, "r") as fp:
@@ -68,7 +70,7 @@ class Base(object):
                 self.assertEqual(result, expected_result)
 
         else:
-            results = []
+            test_results = []
 
             for line in lines:
                 try:
@@ -84,7 +86,7 @@ class Base(object):
                 result2 = parser.log_to_dict(line)
                 self.assertEqual(result1, result2)
 
-                results.append(result1)
+                test_results.append(result1)
 
             with open(path, "w") as fp:
-                json.dump(results, fp, indent=4)
+                json.dump(test_results, fp, indent=4)

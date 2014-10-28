@@ -43,5 +43,8 @@ setup(
         "Topic :: Software Development :: Libraries :: Python Modules",
     ],
     keywords="karaage cluster user administration",
+    package_data={
+        '': ['*.log', '*.json'],
+    },
     test_suite="alogger.tests",
 )
