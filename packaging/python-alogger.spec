@@ -9,7 +9,7 @@
 %global srcname python-alogger
 
 Name: python-alogger
-Version: 2.2.1
+Version: %(cat VERSION.txt)
 Release: 1%{?dist}
 Summary: Small Python library to parse resource manager logs
 %{?el6:Requires: python-importlib}
