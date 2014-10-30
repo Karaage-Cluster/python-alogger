@@ -175,8 +175,9 @@ class Parser(BaseParser):
                     value = row[i]
                     this_row[key] = value
 
-                JobID = "%s.%s%s" % (this_row['JobID'],
-                        this_row['Cluster'], cfg.get("jobid_postfix", ""))
+                JobID = "%s.%s%s" % (
+                    this_row['JobID'], this_row['Cluster'],
+                    cfg.get("jobid_postfix", ""))
 
                 AllocCPUS = int(this_row['AllocCPUS'])
                 State = this_row['State'].split(" ")

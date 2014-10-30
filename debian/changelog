@@ -1,3 +1,12 @@
+python-alogger (2.2.2-1) unstable; urgency=low
+
+  * Include test data.
+  * New API to read from source. Note: Slurm reader still incomplete, memory
+    usage information will not be read.
+  * Update sample torque log file.
+
+ -- Brian May <bam@debian.org>  Thu, 30 Oct 2014 13:53:48 +1100
+
 python-alogger (2.2.1-1) unstable; urgency=low
 
   * New version.
