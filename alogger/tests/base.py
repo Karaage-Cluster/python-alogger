@@ -112,6 +112,9 @@ class Base(object):
         expected_text_path = os.path.join(directory, self.file_prefix+".log")
 
         tmp_dir = "tmp"
+        if not os.path.isdir(tmp_dir):
+            os.mkdir(tmp_dir)
+
         date = datetime.date.today()
 
         cfg = self.get_cfg()
