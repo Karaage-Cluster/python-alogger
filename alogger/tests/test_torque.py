@@ -23,4 +23,4 @@ from .base import Base
 
 class TestTorque(Base, unittest.TestCase):
     file_prefix = "torque"
-    log_type = "PBS"
+    log_type = "TORQUE"
