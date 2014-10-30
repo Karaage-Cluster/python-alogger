@@ -14,25 +14,3 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with python-alogger  If not, see <http://www.gnu.org/licenses/>.
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
-import unittest
-import os.path
-
-from .base import Base
-from . import examples
-
-
-class TestSlurm(Base, unittest.TestCase):
-    file_prefix = "slurm"
-    log_type = "SLURM"
-
-    def get_cfg(self):
-        directory = os.path.abspath(os.path.split(examples.__file__)[0])
-        path = os.path.join(directory, self.file_prefix)
-
-        return {
-            'sacct_path': path,
-            'jobid_postfix': '-m',
-        }

@@ -28,52 +28,38 @@ _plugins = {}
 def register_plugin(module_name, log_type):
     _plugins[log_type] = module_name
 
-register_plugin("alogger.parsers.torque", "PBS")
-register_plugin("alogger.parsers.sge", "SGE")
-register_plugin("alogger.parsers.slurm", "SLURM")
-register_plugin("alogger.parsers.winhpc", "WINHPC")
+register_plugin("alogger.parsers.torque.Parser", "PBS")
+register_plugin("alogger.parsers.sge.Parser", "SGE")
+register_plugin("alogger.parsers.slurm.Parser", "SLURM")
+register_plugin("alogger.parsers.winhpc.Parser", "WINHPC")
 
 
 class InvalidLogType(Exception):
     pass
 
 
-def _get_line_to_dict(log_type):
+def get_parser(log_type):
     try:
-        module_name = _plugins[log_type]
+        module_name, _, name = _plugins[log_type].rpartition(".")
     except KeyError:
         logger.error('Cannot find parser for log type: %s' % log_type)
         raise InvalidLogType('Cannot find parser for log type: %s' % log_type)
 
     module = importlib.import_module(module_name)
+    cls = getattr(module, name)
 
-    try:
-        line_to_dict = module.line_to_dict
-    except AttributeError:
-        logger.error('Invalid parser for log type: %s' % log_type)
-        raise InvalidLogType('Invalid parser for log type: %s' % log_type)
-
-    return line_to_dict
+    parser = cls()
+    return parser
 
 
 def log_to_dict(line, log_type):
     warnings.warn('log_to_dict depreciated', DeprecationWarning)
 
-    line_to_dict = _get_line_to_dict(log_type)
-    result = line_to_dict(line)
+    parser = get_parser(log_type)
+    result = parser.line_to_dict(line)
 
     # required for backwards compatability
     if result is None:
         raise KeyError
 
     return result
-
-
-class Parser(object):
-
-    def __init__(self, log_type):
-        self._log_type = log_type
-        self._line_to_dict = _get_line_to_dict(log_type)
-
-    def log_to_dict(self, line):
-        return self._line_to_dict(line)

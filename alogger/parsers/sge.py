@@ -55,62 +55,72 @@ import datetime
 import logging
 logger = logging.getLogger(__name__)
 
+from ..base import BaseParser
 
-def line_to_dict(line):
-    """
-    Parses a SGE accounting log file line into a python dict
 
-    raises ValueError when line not valid
+class Parser(BaseParser):
 
-    """
-    try:
-        queue, hostname, group, username, jobname, jobid, account, priority, \
-            qsub_time, start_time, end_time, failed, exit_status, \
-            ru_wallclock, ru_utime, ru_stime, ru_maxrss, ru_ixrss, \
-            ru_ismrss, ru_idrss,  ru_isrss, ru_minflt, ru_majflt, \
-            ru_nswap, ru_inblock, ru_oublock, ru_msgsnd, ru_msgrcv, \
-            ru_nsignals, ru_nvcsw, ru_nivcsw, project, department, \
-            granted_pe, slots, UNKNOWN, cpu, mem, UNKNOWN, \
-            command_line_arguments, UNKNOWN, UNKNOWN, \
-            maxvmem_bytes = line.split(':')
-    except:
-        a1, a2, queue, hostname, group, username, jobname, jobid, account, \
-            priority, qsub_time, start_time, end_time, failed, exit_status, \
-            ru_wallclock, ru_utime, ru_stime, ru_maxrss, ru_ixrss, ru_ismrss, \
-            ru_idrss,  ru_isrss, ru_minflt, ru_majflt, ru_nswap, ru_inblock, \
-            ru_oublock, ru_msgsnd, ru_msgrcv, ru_nsignals, ru_nvcsw, \
-            ru_nivcsw, project, department, granted_pe, slots, UNKNOWN, \
-            cpu, mem, UNKNOWN, command_line_arguments, UNKNOWN, UNKNOWN, \
-            maxvmem_bytes = line.split(':')
+    def line_to_dict(self, line):
+        """
+        Parses a SGE accounting log file line into a python dict
 
-    formatted_data = {}
+        raises ValueError when line not valid
 
-    formatted_data['jobid'] = jobid
+        """
+        try:
+            queue, hostname, group, username, jobname, jobid, account, \
+                priority, \
+                qsub_time, start_time, end_time, failed, exit_status, \
+                ru_wallclock, ru_utime, ru_stime, ru_maxrss, ru_ixrss, \
+                ru_ismrss, ru_idrss,  ru_isrss, ru_minflt, ru_majflt, \
+                ru_nswap, ru_inblock, ru_oublock, ru_msgsnd, ru_msgrcv, \
+                ru_nsignals, ru_nvcsw, ru_nivcsw, project, department, \
+                granted_pe, slots, UNKNOWN, cpu, mem, UNKNOWN, \
+                command_line_arguments, UNKNOWN, UNKNOWN, \
+                maxvmem_bytes = line.split(':')
+        except:
+            a1, a2, queue, hostname, group, username, jobname, jobid, \
+                account, \
+                priority, qsub_time, start_time, end_time, failed, \
+                exit_status, \
+                ru_wallclock, ru_utime, ru_stime, ru_maxrss, ru_ixrss, \
+                ru_ismrss, \
+                ru_idrss,  ru_isrss, ru_minflt, ru_majflt, ru_nswap, \
+                ru_inblock, \
+                ru_oublock, ru_msgsnd, ru_msgrcv, ru_nsignals, ru_nvcsw, \
+                ru_nivcsw, project, department, granted_pe, slots, UNKNOWN, \
+                cpu, mem, UNKNOWN, command_line_arguments, UNKNOWN, UNKNOWN, \
+                maxvmem_bytes = line.split(':')
 
-    formatted_data['date'] = \
-        datetime.datetime.fromtimestamp(int(end_time)).isoformat(str(' '))
-    formatted_data['user'] = username
+        formatted_data = {}
 
-    formatted_data['jobname'] = jobname
-    try:
-        formatted_data['est_wall_time'] = None
-        formatted_data['act_wall_time'] = int(ru_wallclock)
-    except:
-        logger.error('Failed to parse act_wall_time value: %s' % ru_wallclock)
-        raise ValueError
+        formatted_data['jobid'] = jobid
 
-    formatted_data['cores'] = int(slots)
-    formatted_data['cpu_usage'] = \
-        formatted_data['cores'] * formatted_data['act_wall_time']
+        formatted_data['date'] = \
+            datetime.datetime.fromtimestamp(int(end_time)).isoformat(str(' '))
+        formatted_data['user'] = username
 
-    formatted_data['queue'] = queue
+        formatted_data['jobname'] = jobname
+        try:
+            formatted_data['est_wall_time'] = None
+            formatted_data['act_wall_time'] = int(ru_wallclock)
+        except:
+            logger.error(
+                'Failed to parse act_wall_time value: %s' % ru_wallclock)
+            raise ValueError
 
-    formatted_data['start'] = \
-        datetime.datetime.fromtimestamp(int(qsub_time)).isoformat(str(' '))
-    formatted_data['exit_status'] = exit_status
+        formatted_data['cores'] = int(slots)
+        formatted_data['cpu_usage'] = \
+            formatted_data['cores'] * formatted_data['act_wall_time']
 
-    logger.debug("Parsed following data")
-    for k, v in formatted_data.items():
-        logger.debug("%s = %s" % (k, v))
+        formatted_data['queue'] = queue
 
-    return formatted_data
+        formatted_data['start'] = \
+            datetime.datetime.fromtimestamp(int(qsub_time)).isoformat(str(' '))
+        formatted_data['exit_status'] = exit_status
+
+        logger.debug("Parsed following data")
+        for k, v in formatted_data.items():
+            logger.debug("%s = %s" % (k, v))
+
+        return formatted_data

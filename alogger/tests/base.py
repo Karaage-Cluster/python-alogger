@@ -17,10 +17,14 @@
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-from alogger import log_to_dict, Parser
+import filecmp
+import datetime
 import os.path
 import json
+import shutil
 import warnings
+
+from .. import log_to_dict, get_parser
 
 from . import examples, results
 
@@ -33,14 +37,13 @@ _force_rebuild = False
 
 class Base(object):
 
-    def test_log_to_dict(self):
+    def test_line_to_dict(self):
         directory = os.path.abspath(os.path.split(examples.__file__)[0])
         path = os.path.join(directory, self.file_prefix+".log")
-        fd = open(path, "r")
-        lines = fd.readlines()
-        fd.close()
+        with open(path, "r") as f:
+            lines = f.readlines()
 
-        parser = Parser(self.log_type)
+        parser = get_parser(self.log_type)
 
         directory = os.path.abspath(os.path.split(results.__file__)[0])
         path = os.path.join(directory, self.file_prefix+".json")
@@ -66,13 +69,14 @@ class Base(object):
                 self.assertEqual(result, expected_result)
 
                 # current
-                result = parser.log_to_dict(line)
+                result = parser.line_to_dict(line)
                 self.assertEqual(result, expected_result)
 
         else:
             test_results = []
 
             for line in lines:
+                # depreciated
                 try:
                     with warnings.catch_warnings(record=True) as w:
                         warnings.simplefilter("always")
@@ -83,10 +87,63 @@ class Base(object):
                     self.assertIsNotNone(result1)
                 except KeyError:
                     result1 = None
-                result2 = parser.log_to_dict(line)
+
+                # current
+                result2 = parser.line_to_dict(line)
+
+                # compare depreciated with current
                 self.assertEqual(result1, result2)
 
+                # save result
                 test_results.append(result1)
 
             with open(path, "w") as fp:
                 json.dump(test_results, fp, indent=4)
+
+    def get_cfg(self):
+        directory = os.path.abspath(os.path.split(examples.__file__)[0])
+        return {
+            'log_dir': directory,
+            'log_filename': self.file_prefix+".log",
+        }
+
+    def test_read_log(self):
+        directory = os.path.abspath(os.path.split(examples.__file__)[0])
+        expected_text_path = os.path.join(directory, self.file_prefix+".log")
+
+        tmp_dir = "tmp"
+        date = datetime.date.today()
+
+        cfg = self.get_cfg()
+        cfg.update({
+            'text_dir': tmp_dir,
+        })
+
+        text_filename = date.strftime('%Y%m%d')
+        text_path = os.path.join(tmp_dir, text_filename)
+
+        parser = get_parser(self.log_type)
+
+        directory = os.path.abspath(os.path.split(results.__file__)[0])
+        path = os.path.join(directory, self.file_prefix+".json")
+        if _testing_only or (os.path.isfile(path) and not _force_rebuild):
+
+            with open(path, "r") as fp:
+                expected_results = json.load(fp)
+
+            for result in parser.read_log(date, cfg):
+                expected_result = expected_results.pop(0)
+                self.assertEqual(result, expected_result)
+
+            self.assertTrue(filecmp.cmp(text_path, expected_text_path))
+
+        else:
+            test_results = []
+
+            for result in parser.read_log(date, cfg):
+                test_results.append(result)
+
+            with open(path, "w") as fp:
+                json.dump(test_results, fp, indent=4)
+
+            shutil.copyfile(text_path, expected_text_path)

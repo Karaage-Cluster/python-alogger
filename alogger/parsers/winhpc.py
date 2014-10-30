@@ -55,84 +55,90 @@ import datetime
 import logging
 logger = logging.getLogger(__name__)
 
+from ..base import BaseParser
 
-def line_to_dict(line):
-    """
-    Parses a PBS log file line into a python dict
 
-    raises ValueError when line not valid
+class Parser(BaseParser):
 
-    """
-    logger.debug('Parsing line:')
-    logger.debug(line)
-    # Split line into parts, only care about raw_data
-    jobid, raw_data = line.split(' ', 1)
+    def line_to_dict(self, line):
+        """
+        Parses a PBS log file line into a python dict
 
-    data = {}
-    formatted_data = {}
+        raises ValueError when line not valid
 
-    formatted_data['jobid'] = jobid
+        """
+        logger.debug('Parsing line:')
+        logger.debug(line)
+        # Split line into parts, only care about raw_data
+        jobid, raw_data = line.split(' ', 1)
 
-    # Make into a dict using values key=value
-    for d in raw_data.split(';'):
+        data = {}
+        formatted_data = {}
+
+        formatted_data['jobid'] = jobid
+
+        # Make into a dict using values key=value
+        for d in raw_data.split(';'):
+            try:
+                key, value = d.split('=')
+                data[key] = value
+            except:
+                continue
+
+        logger.debug(jobid)
+        logger.debug(data)
+
+        # Check to see if line worth proccessing
+        if 'REJMESSAGE' in data:
+            return
+        if 'COMPLETETIME' not in data:
+            return
+
+        formatted_data['user'] = data['UNAME']
+        if 'account' in data:
+            formatted_data['project'] = data['']
+
+        # formatted_data['jobname'] = data['jobname']
+        formatted_data['group'] = data['GNAME']
+
+        # formatted_data['ctime'] = \
+        #     datetime.datetime.fromtimestamp(
+        #     int(data['ctime'])).isoformat(' ')
+        start = datetime.datetime.fromtimestamp(int(data['STARTTIME']))
+        end = datetime.datetime.fromtimestamp(int(data['COMPLETETIME']))
+        formatted_data['qtime'] = \
+            datetime.datetime.fromtimestamp(
+                int(data['QUEUETIME'])).isoformat(' ')
+        formatted_data['etime'] = end.isoformat(' ')
+        formatted_data['start'] = start.isoformat(' ')
+
+        formatted_data['est_wall_time'] = data['WCLIMIT']
+        formatted_data['act_wall_time'] = (end - start).seconds
+
         try:
-            key, value = d.split('=')
-            data[key] = value
+            formatted_data['exec_hosts'] = data['HOSTLIST'].split(',')
         except:
-            continue
+            pass
+        # cores = data['exec_host'].count('/')
+        formatted_data['cores'] = int(data['TASKS'])
+        formatted_data['cpu_usage'] = \
+            formatted_data['cores'] * formatted_data['act_wall_time']
 
-    logger.debug(jobid)
-    logger.debug(data)
+        # formatted_data['queue'] = data['queue']
 
-    # Check to see if line worth proccessing
-    if 'REJMESSAGE' in data:
-        return
-    if 'COMPLETETIME' not in data:
-        return
+        fromtimestamp = datetime.datetime.fromtimestamp
+        formatted_data['exit_status'] = data['EXITCODE']
+        # formatted_data['ctime'] = \
+        #     fromtimestamp(int(data['ctime'])).isoformat(' ')
+        formatted_data['qtime'] = \
+            fromtimestamp(int(data['QUEUETIME'])).isoformat(' ')
+        formatted_data['etime'] = \
+            fromtimestamp(int(data['COMPLETETIME'])).isoformat(' ')
+        formatted_data['start'] = \
+            fromtimestamp(int(data['STARTTIME'])).isoformat(' ')
 
-    formatted_data['user'] = data['UNAME']
-    if 'account' in data:
-        formatted_data['project'] = data['']
+        logger.debug("Parsed following data")
+        for k, v in formatted_data.items():
+            logger.debug("%s = %s" % (k, v))
 
-    # formatted_data['jobname'] = data['jobname']
-    formatted_data['group'] = data['GNAME']
-
-    # formatted_data['ctime'] = \
-    #     datetime.datetime.fromtimestamp(int(data['ctime'])).isoformat(' ')
-    start = datetime.datetime.fromtimestamp(int(data['STARTTIME']))
-    end = datetime.datetime.fromtimestamp(int(data['COMPLETETIME']))
-    formatted_data['qtime'] = \
-        datetime.datetime.fromtimestamp(int(data['QUEUETIME'])).isoformat(' ')
-    formatted_data['etime'] = end.isoformat(' ')
-    formatted_data['start'] = start.isoformat(' ')
-
-    formatted_data['est_wall_time'] = data['WCLIMIT']
-    formatted_data['act_wall_time'] = (end - start).seconds
-
-    try:
-        formatted_data['exec_hosts'] = data['HOSTLIST'].split(',')
-    except:
-        pass
-    # cores = data['exec_host'].count('/')
-    formatted_data['cores'] = int(data['TASKS'])
-    formatted_data['cpu_usage'] = \
-        formatted_data['cores'] * formatted_data['act_wall_time']
-
-    # formatted_data['queue'] = data['queue']
-
-    fromtimestamp = datetime.datetime.fromtimestamp
-    formatted_data['exit_status'] = data['EXITCODE']
-    # formatted_data['ctime'] = \
-    #     fromtimestamp(int(data['ctime'])).isoformat(' ')
-    formatted_data['qtime'] = \
-        fromtimestamp(int(data['QUEUETIME'])).isoformat(' ')
-    formatted_data['etime'] = \
-        fromtimestamp(int(data['COMPLETETIME'])).isoformat(' ')
-    formatted_data['start'] = \
-        fromtimestamp(int(data['STARTTIME'])).isoformat(' ')
-
-    logger.debug("Parsed following data")
-    for k, v in formatted_data.items():
-        logger.debug("%s = %s" % (k, v))
-
-    return formatted_data
+        return formatted_data
