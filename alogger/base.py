@@ -18,6 +18,7 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 from __future__ import print_function
 
+import errno
 import os.path
 import logging
 logger = logging.getLogger(__name__)
@@ -60,11 +61,18 @@ class BaseParser(object):
         filename = cfg.get('log_filename', filename)
 
         path = os.path.join(cfg['log_dir'], filename)
-        with open(path, 'r') as f:
-            with TextLog(date, cfg) as log:
-                for line in f:
-                    log.line(line)
-                    yield self.line_to_dict(line)
+
+        try:
+            with open(path, 'r') as f:
+                with TextLog(date, cfg) as log:
+                    for line in f:
+                        log.line(line)
+                        yield self.line_to_dict(line)
+        except IOError as ex:
+            if ex.errno == errno.ENOENT:
+                pass  # ignore file not found error
+            else:
+                raise
 
     def line_to_dict(self, line):
         raise NotImplementedError()
