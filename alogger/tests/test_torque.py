@@ -18,9 +18,32 @@ from __future__ import absolute_import
 from __future__ import unicode_literals
 
 import unittest
+import warnings
 from .base import Base
 
 
 class TestTorque(Base, unittest.TestCase):
     file_prefix = "torque"
     log_type = "TORQUE"
+
+
+class TestPBS(Base, unittest.TestCase):
+    file_prefix = "torque"
+    log_type = "PBS"
+    # legacy
+
+    def test_line_to_dict(self):
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            super(TestPBS, self).test_line_to_dict()
+            self.assertTrue(len(w) == 1)
+            self.assertTrue(
+                issubclass(w[0].category, DeprecationWarning))
+
+    def test_read_log(self):
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            super(TestPBS, self).test_read_log()
+            self.assertTrue(len(w) == 1)
+            self.assertTrue(
+                issubclass(w[0].category, DeprecationWarning))

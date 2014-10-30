@@ -57,12 +57,9 @@ class Base(object):
 
                 # depreciated
                 try:
-                    with warnings.catch_warnings(record=True) as w:
+                    with warnings.catch_warnings(record=True):
                         warnings.simplefilter("always")
                         result = log_to_dict(line, self.log_type)
-                        self.assertEqual(len(w), 1)
-                        self.assertTrue(
-                            issubclass(w[0].category, DeprecationWarning))
                     self.assertIsNotNone(result)
                 except KeyError:
                     result = None
@@ -78,12 +75,9 @@ class Base(object):
             for line in lines:
                 # depreciated
                 try:
-                    with warnings.catch_warnings(record=True) as w:
+                    with warnings.catch_warnings(record=True):
                         warnings.simplefilter("always")
                         result1 = log_to_dict(line, self.log_type)
-                        self.assertEqual(len(w), 1)
-                        self.assertTrue(
-                            issubclass(w[0].category, DeprecationWarning))
                     self.assertIsNotNone(result1)
                 except KeyError:
                     result1 = None

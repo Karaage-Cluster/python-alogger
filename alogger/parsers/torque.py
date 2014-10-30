@@ -51,6 +51,7 @@ Raises value error if funky wall time
 
 """
 
+import warnings
 import datetime
 import logging
 logger = logging.getLogger(__name__)
@@ -157,3 +158,10 @@ class Parser(BaseParser):
             logger.debug("%s = %s" % (k, v))
 
         return formatted_data
+
+
+class PbsParser(Parser):
+    def __init__(self):
+        warnings.warn(
+            'PBS parser obsolete; use TORQUE instead.', DeprecationWarning)
+        super(PbsParser, self).__init__()
