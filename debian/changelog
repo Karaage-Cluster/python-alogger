@@ -1,3 +1,11 @@
+python-alogger (2.2.3-1) unstable; urgency=low
+
+  * Support PBS parser as legacy alias for TORQUE.
+  * Ignore file not found error when reading TORQUE log file.
+  * Fix RPM package version.
+
+ -- Brian May <bam@debian.org>  Fri, 31 Oct 2014 15:37:09 +1100
+
 python-alogger (2.2.2-1) unstable; urgency=low
 
   * Include test data.
