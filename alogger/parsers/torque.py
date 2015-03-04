@@ -95,28 +95,22 @@ class Parser(BaseParser):
             return None
 
         formatted_data['user'] = data['user']
-        if 'account' in data:
+        if 'project' in data:
+            formatted_data['project'] = data['project']
+        elif 'account' in data:
             formatted_data['project'] = data['account']
 
         formatted_data['jobname'] = data['jobname']
         formatted_data['group'] = data['group']
-        try:
-            formatted_data['act_wall_time'] = \
-                get_in_seconds(data['resources_used.walltime'])
-        except:
-            logger.error(
-                'Failed to parse act_wall_time value: %s'
-                % data['resources_used.walltime'])
-            raise ValueError
 
-        try:
+        formatted_data['act_wall_time'] = \
+            get_in_seconds(data['resources_used.walltime'])
+
+        if 'est_wall_time' in data:
             formatted_data['est_wall_time'] = \
-                get_in_seconds(data['Resource_List.walltime'])
-        except:
-            logger.error(
-                'Failed to parse est_wall_time value: %s'
-                % data['Resource_List.walltime'])
-            raise ValueError
+                get_in_seconds(data.get('Resource_List.walltime'))
+        else:
+            formatted_data['est_wall_time'] = None
 
         formatted_data['exec_hosts'] = \
             [x[:-2] for x in data['exec_host'].split('+')]
