@@ -1,3 +1,11 @@
+python-alogger (2.2.4-1) unstable; urgency=medium
+
+  * PBS Pro uses 'project' not 'account'.
+  * Simplify act_wall_time processing.
+  * est_wall_time is optional and can be None.
+
+ -- Brian May <bam@debian.org>  Fri, 06 Mar 2015 11:10:51 +1100
+
 python-alogger (2.2.3-1) unstable; urgency=low
 
   * Support PBS parser as legacy alias for TORQUE.
