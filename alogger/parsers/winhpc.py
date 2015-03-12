@@ -60,7 +60,7 @@ from ..base import BaseParser
 
 class Parser(BaseParser):
 
-    def line_to_dict(self, line):
+    def line_to_dict(self, line, cfg=None):
         """
         Parses a PBS log file line into a python dict
 

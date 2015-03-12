@@ -67,12 +67,12 @@ class BaseParser(object):
                 with TextLog(date, cfg) as log:
                     for line in f:
                         log.line(line)
-                        yield self.line_to_dict(line)
+                        yield self.line_to_dict(line, cfg)
         except IOError as ex:
             if ex.errno == errno.ENOENT:
                 pass  # ignore file not found error
             else:
                 raise
 
-    def line_to_dict(self, line):
+    def line_to_dict(self, line, cfg=None):
         raise NotImplementedError()

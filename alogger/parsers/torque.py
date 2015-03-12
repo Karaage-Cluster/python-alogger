@@ -63,13 +63,16 @@ from ..base import BaseParser
 
 class Parser(BaseParser):
 
-    def line_to_dict(self, line):
+    def line_to_dict(self, line, cfg=None):
         """
         Parses a PBS log file line into a python dict
 
         raises ValueError when line not valid
 
         """
+        if cfg is None:
+            cfg = {}
+
         logger.debug('Parsing line:')
         logger.debug(line)
         # Split line into parts, only care about raw_data
@@ -95,10 +98,19 @@ class Parser(BaseParser):
             return None
 
         formatted_data['user'] = data['user']
+        formatted_data['project'] = None
         if 'project' in data:
             formatted_data['project'] = data['project']
         elif 'account' in data:
             formatted_data['project'] = data['account']
+
+        ignore_project = cfg.get('ignore_project', None)
+        if ignore_project is not None \
+                and formatted_data['project'] == ignore_project:
+            formatted_data['project'] = None
+
+        if formatted_data['project'] is None:
+            formatted_data['project'] = cfg.get('default_project', None)
 
         formatted_data['jobname'] = data['jobname']
         formatted_data['group'] = data['group']
