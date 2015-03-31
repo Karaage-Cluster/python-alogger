@@ -1,3 +1,9 @@
+python-alogger (2.2.5-1) unstable; urgency=medium
+
+  * New config options to allow replacing default project.
+
+ -- Brian May <bam@debian.org>  Tue, 31 Mar 2015 11:50:12 +1100
+
 python-alogger (2.2.4-1) unstable; urgency=medium
 
   * PBS Pro uses 'project' not 'account'.

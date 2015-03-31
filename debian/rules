@@ -9,3 +9,8 @@ export PYBUILD_NAME=alogger
 .PHONY: override_dh_auto_test
 override_dh_auto_test:
 	./run_tests.sh
+
+.PHONY: override_dh_clean
+override_dh_clean:
+	dh_clean
+	rm -rf tmp
