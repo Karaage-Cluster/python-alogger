@@ -126,7 +126,11 @@ class Parser(BaseParser):
 
         formatted_data['exec_hosts'] = \
             [x[:-2] for x in data['exec_host'].split('+')]
-        cores = data['exec_host'].count('/')
+
+        if 'resources_used.ncpus' in data:
+            cores = int(data['resources_used.ncpus'])
+        else:
+            cores = data['exec_host'].count('/')
         formatted_data['cores'] = cores
         formatted_data['cpu_usage'] = cores * formatted_data['act_wall_time']
 
