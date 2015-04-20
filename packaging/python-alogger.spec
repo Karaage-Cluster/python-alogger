@@ -25,7 +25,7 @@ BuildArch: noarch
 BuildRequires:  python2-devel, python-setuptools
 %if 0%{?fedora} > 20
 BuildRequires:  python-flake8
-%endif # if fedora > 19
+%endif # if fedora > 20
 %{?el6:BuildRequires: python-importlib}
 
 %if 0%{?with_python3}
@@ -83,17 +83,17 @@ OLD_TZ="$TZ"
 export TZ='Australia/Melbourne'
 
 # Python 2 tests only work with Python >= 2.7
-if [ -x /usr/bin/flake8 ]; then
+%if 0%{?fedora} > 20
     %{__python2} /usr/bin/flake8 .
-fi
+%endif # fedora > 20
 %if 0%{?with_python27}
 %{__python2} setup.py test
 %endif # with_python2
 
 %if 0%{?with_python3}
-if [ -x /usr/bin/flake8 ]; then
+%if 0%{?fedora} > 20
     %{__python3} /usr/bin/flake8 .
-fi
+%endif # fedora > 20
 %{__python3} setup.py test
 %endif # with_python3
 
