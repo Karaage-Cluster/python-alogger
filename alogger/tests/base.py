@@ -36,6 +36,9 @@ _force_rebuild = False
 
 
 class Base(object):
+    def __init__(self, *args, **kwargs):
+        super(Base, self).__init__(*args, **kwargs)
+        self.maxDiff = None
 
     def test_line_to_dict(self):
         directory = os.path.abspath(os.path.split(examples.__file__)[0])
