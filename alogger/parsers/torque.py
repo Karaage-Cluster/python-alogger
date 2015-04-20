@@ -118,7 +118,7 @@ class Parser(BaseParser):
         formatted_data['act_wall_time'] = \
             get_in_seconds(data['resources_used.walltime'])
 
-        if 'est_wall_time' in data:
+        if 'Resource_List.walltime' in data:
             formatted_data['est_wall_time'] = \
                 get_in_seconds(data.get('Resource_List.walltime'))
         else:
