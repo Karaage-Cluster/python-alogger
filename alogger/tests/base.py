@@ -92,7 +92,7 @@ class Base(object):
                 test_results.append(result1)
 
             with open(path, "w") as fp:
-                json.dump(test_results, fp, indent=4)
+                json.dump(test_results, fp, sort_keys=True, indent=4)
 
     def get_cfg(self):
         directory = os.path.abspath(os.path.split(examples.__file__)[0])
@@ -141,6 +141,6 @@ class Base(object):
                 test_results.append(result)
 
             with open(path, "w") as fp:
-                json.dump(test_results, fp, indent=4)
+                json.dump(test_results, fp, sort_keys=True, indent=4)
 
             shutil.copyfile(text_path, expected_text_path)
