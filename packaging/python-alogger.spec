@@ -10,7 +10,7 @@
 %global srcname python-alogger
 
 Name: python-alogger
-Version: 2.2.5
+Version: 2.2.6
 Release: 1%{?dist}
 Summary: Small Python library to parse resource manager logs
 %{?el6:Requires: python-importlib}
@@ -42,6 +42,11 @@ Karaage, see https://github.com/Karaage-Cluster/karaage, or the documentation
 at http://karaage.readthedocs.org/
 
 %changelog
+* Mon Apr 20 2015 Brian May <brian@microcomaustralia.com.au> 2.2.6-1
+- updates to rpm spec file.
+- torque: Fix est_wall_time.
+- torque (PBS Pro): Fix core count.
+
 * Tue Mar 31 2015 Brian May <brian@microcomaustralia.com.au> 2.2.5-1
 - Add new config option.
 

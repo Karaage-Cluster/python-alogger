@@ -1,3 +1,10 @@
+python-alogger (2.2.6-1) unstable; urgency=medium
+
+  * torque: Fix est_wall_time.
+  * torque (PBS Pro): Fix core count.
+
+ -- Brian May <bam@debian.org>  Mon, 20 Apr 2015 13:49:41 +1000
+
 python-alogger (2.2.5-1) unstable; urgency=medium
 
   * New config options to allow replacing default project.
