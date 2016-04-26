@@ -3,7 +3,6 @@ Section: python
 Priority: optional
 Maintainer: Brian May <bam@debian.org>
 Build-Depends: debhelper (>=8.1.0), dh-python,
- python-flake8,
  python-all (>= 2.6.6-3~), python-setuptools,
  python3-all, python3-setuptools
 Standards-Version: 3.9.6

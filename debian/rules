@@ -8,7 +8,7 @@ export PYBUILD_NAME=alogger
 
 .PHONY: override_dh_auto_test
 override_dh_auto_test:
-	./run_tests.sh
+	dh_auto_test -- --system=custom --test-args="{interpreter} setup.py test"
 
 .PHONY: override_dh_clean
 override_dh_clean:
