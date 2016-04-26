@@ -5,7 +5,7 @@ Maintainer: Brian May <bam@debian.org>
 Build-Depends: debhelper (>=8.1.0), dh-python,
  python-all (>= 2.6.6-3~), python-setuptools,
  python3-all, python3-setuptools
-Standards-Version: 3.9.6
+Standards-Version: 3.9.8
 Homepage: https://github.com/Karaage-Cluster/python-alogger
 Vcs-Git: git://github.com/Karaage-Cluster/python-alogger
 Vcs-Browser: https://github.com/Karaage-Cluster/python-alogger
