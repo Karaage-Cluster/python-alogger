@@ -1,5 +1,5 @@
-Release 2.2.6-2 (26 Apr 2016)
-=============================
+Release 2.2.7 (29 Apr 2016)
+===========================
 
 * Split out Debian packaging
 * Fix flake8 issues.
