@@ -1,6 +1,10 @@
 include *.txt
 include *.rst
 include *.py
+include *.sh
 include MANIFEST.in
+include .gitreview
+exclude alogger/version.py
+recursive-include packaging *.spec
 recursive-include alogger *.py
 recursive-include alogger/tests/examples *

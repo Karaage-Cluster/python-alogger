@@ -19,12 +19,12 @@
 
 from setuptools import setup, find_packages
 
-with open('VERSION.txt', 'r') as f:
-    version = f.readline().strip()
-
 setup(
     name="python-alogger",
-    version=version,
+    use_scm_version={
+        'write_to': "alogger/version.py",
+    },
+    setup_requires=['setuptools_scm'],
     url='https://github.com/Karaage-Cluster/python-alogger',
     author='Brian May',
     author_email='brian@v3.org.au',
