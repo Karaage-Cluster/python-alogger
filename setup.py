@@ -27,7 +27,7 @@ setup(
     setup_requires=['setuptools_scm'],
     url='https://github.com/Karaage-Cluster/python-alogger',
     author='Brian May',
-    author_email='brian@v3.org.au',
+    author_email='brian@linuxpenguins.xyz',
     description='Small python library to parse resource manager logs',
     packages=find_packages(),
     license="GPL3+",
