@@ -1,6 +1,7 @@
 /build/
 /alogger/version.py
 /python_alogger.egg-info/
+/dist/
 /.eggs/
 /.tox/
 /tmp/
