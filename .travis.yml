@@ -6,4 +6,4 @@ python:
 - pypy
 
 script:
-  - ./setup.py test
+  - TZ='Australia/Melbourne' ./setup.py test
