@@ -5,7 +5,6 @@ include *.sh
 include *.ini
 include MANIFEST.in
 include .gitreview
-exclude alogger/version.py
 recursive-include alogger *.py
 recursive-exclude alogger *.pyc __pycache__
 recursive-include alogger/tests/examples *
