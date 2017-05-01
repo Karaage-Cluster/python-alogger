@@ -1,53 +1,64 @@
-Release 2.2.9 (03 May 2016)
-===========================
+==========
+Change log
+==========
+All notable changes to this project will be documented in this file. The format
+is based on `Keep a Changelog`_ and this project
+adheres to `Semantic Versioning`_.
+
+.. _`Keep a Changelog`: http://keepachangelog.com/
+.. _`Semantic Versioning`: http://semver.org/
+
+
+2.2.9 - 2016-05-03
+------------------
 
 * Update my email address.
 
 
-Release 2.2.8 (29 Apr 2016)
-===========================
+2.2.8 - 2016-04-29
+------------------
 
 * Fix problems in MANIFEST.in
 
 
-Release 2.2.7 (29 Apr 2016)
-===========================
+2.2.7 - 2016-04-29
+------------------
 
 * Split out Debian packaging
 * Fix flake8 issues.
 
 
-Release 2.2.6 (20 Apr 2015)
-===========================
+2.2.6 - 2015-04-20
+------------------
 
 * torque: Fix est_wall_time.
 * torque (PBS Pro): Fix core count.
 
 
-Release 2.2.5 (31 Mar 2015)
-===========================
+2.2.5 - 2015-03-31
+------------------
 
 * New config options to allow replacing default project.
 
 
-Release 2.2.4 (06 Mar 2015)
-===========================
+2.2.4 - 2015-03-06
+------------------
 
 * PBS Pro uses 'project' not 'account'.
 * Simplify act_wall_time processing.
 * est_wall_time is optional and can be None.
 
 
-Release 2.2.3 (31 Oct 2014)
-===========================
+2.2.3 - 2014-10-31
+------------------
 
 * Support PBS parser as legacy alias for TORQUE.
 * Ignore file not found error when reading TORQUE log file.
 * Fix RPM package version.
 
 
-Release 2.2.2 (30 Oct 2014)
-===========================
+2.2.2 - 2014-10-30
+------------------
 
 * Include test data.
 * New API to read from source. Note: Slurm reader still incomplete, memory
@@ -55,15 +66,15 @@ Release 2.2.2 (30 Oct 2014)
 * Update sample torque log file.
 
 
-Release 2.2.1 (27 Oct 2014)
-===========================
+2.2.1 - 2014-10-27
+------------------
 
 * New version.
 * More tests.
 
 
-Release 2.2.0 (07 Jul 2014)
-===========================
+2.2.0 - 2014-07-07
+------------------
 
 * Add Vcs headers.
 * Python3 package.
@@ -79,73 +90,73 @@ Release 2.2.0 (07 Jul 2014)
 * New plugin architecture.
 
 
-Release 2.1.7 (19 May 2014)
-===========================
+2.1.7 - 2014-05-19
+------------------
 
 * Updates for Slurm support. Contributed by VLSCI.
 
 
-Release 2.1.6 (11 Mar 2014)
-===========================
+2.1.6 - 2014-03-11
+------------------
 
 * Update python packaging.
 * Update information.
 * No functional changes.
 
 
-Release 2.1.5 (29 Jan 2014)
-===========================
+2.1.5 - 2014-01-29
+------------------
 
 * Update Debian packaging.
 
 
-Release 2.1.4 (28 May 2013)
-===========================
+2.1.4 - 2013-05-28
+------------------
 
 * Update Debian packaging.
 * Slurm specific changes from 2010.
 * Initial attempt for Windows HPC support from 2011.
 
 
-Release 2.1.3 (30 Nov 2010)
-===========================
+2.1.3 - 2010-11-30
+------------------
 
 * Updated how slurm processes projects
 
 
-Release 2.1.2 (23 Sep 2010)
-===========================
+2.1.2 - 2010-09-23
+------------------
 
 * More improvements to slurm parser 
 
 
-Release 2.1.1 (22 Sep 2010)
-===========================
+2.1.1 - 2010-09-22
+------------------
 
 * Default values for SLURM
 
 
-Release 2.1 (22 Sep 2010)
-=========================
+2.1 - 2010-09-22
+----------------
 
 * Added SLURM log parser
 * Moved parsers into own directory
 * Debian packaging changes
 
 
-Release 2.0.3 (03 Sep 2010)
-===========================
+2.0.3 - 2010-09-03
+------------------
 
 * Handle memory values in a cleaner way
 
 
-Release 2.0.2 (28 May 2010)
-===========================
+2.0.2 - 2010-05-28
+------------------
 
 * Parse exec_host in PBS
 
 
-Release 2.0.1 (19 Mar 2010)
-===========================
+2.0.1 - 2010-03-19
+------------------
 
 * Initial release.
