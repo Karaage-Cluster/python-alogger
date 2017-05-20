@@ -1,8 +1,8 @@
-python-alogger (2.2.10-1) UNRELEASED; urgency=medium
+python-alogger (2.2.10-1) unstable; urgency=medium
 
   * New upstream release.
 
- -- Brian May <bam@debian.org>  Sat, 20 May 2017 11:43:23 +1000
+ -- Brian May <bam@debian.org>  Sat, 20 May 2017 12:15:04 +1000
 
 python-alogger (2.2.9-1) unstable; urgency=medium
 
