@@ -1,0 +1,31 @@
+Source: python-alogger
+Section: python
+Priority: optional
+Maintainer: Brian May <bam@debian.org>
+Build-Depends: debhelper (>=9), dh-python,
+ python-all (>= 2.6.6-3~), python-setuptools, python-setuptools-scm,
+ python-pytest, python-pytest-runner,
+ python3-all, python3-setuptools, python3-setuptools-scm,
+ python3-pytest, python3-pytest-runner,
+Standards-Version: 3.9.8
+Homepage: https://github.com/Karaage-Cluster/python-alogger
+Vcs-Git: git://github.com/Karaage-Cluster/python-alogger
+Vcs-Browser: https://github.com/Karaage-Cluster/python-alogger
+
+Package: python-alogger
+Architecture: all
+Depends: ${misc:Depends}, ${python:Depends}
+Description: Small Python library to parse resource manager logs
+ Python alogger is a small Python library to parse resource manager logs.
+ It is used by Karaage. For more information on
+ Karaage, see https://github.com/Karaage-Cluster/karaage, or the documentation
+ at http://karaage.readthedocs.org/
+
+Package: python3-alogger
+Architecture: all
+Depends: ${misc:Depends}, ${python3:Depends}
+Description: Small Python library to parse resource manager logs
+ Python alogger is a small Python library to parse resource manager logs.
+ It is used by Karaage. For more information on
+ Karaage, see https://github.com/Karaage-Cluster/karaage, or the documentation
+ at http://karaage.readthedocs.org/

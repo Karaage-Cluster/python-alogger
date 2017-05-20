@@ -1,0 +1,157 @@
+python-alogger (2.2.10-1) UNRELEASED; urgency=medium
+
+  * New upstream release.
+
+ -- Brian May <bam@debian.org>  Sat, 20 May 2017 11:43:23 +1000
+
+python-alogger (2.2.9-1) unstable; urgency=medium
+
+  * New upstream release.
+
+ -- Brian May <bam@debian.org>  Tue, 03 May 2016 09:41:51 +1000
+
+python-alogger (2.2.8-1) unstable; urgency=medium
+
+  * New upstream version.
+
+ -- Brian May <bam@debian.org>  Fri, 29 Apr 2016 13:33:05 +1000
+
+python-alogger (2.2.6-2) unstable; urgency=medium
+
+  * Fix flake8 issues.
+
+ -- Brian May <bam@debian.org>  Tue, 26 Apr 2016 14:17:30 +1000
+
+python-alogger (2.2.6-1) unstable; urgency=medium
+
+  * torque: Fix est_wall_time.
+  * torque (PBS Pro): Fix core count.
+
+ -- Brian May <bam@debian.org>  Mon, 20 Apr 2015 13:49:41 +1000
+
+python-alogger (2.2.5-1) unstable; urgency=medium
+
+  * New config options to allow replacing default project.
+
+ -- Brian May <bam@debian.org>  Tue, 31 Mar 2015 11:50:12 +1100
+
+python-alogger (2.2.4-1) unstable; urgency=medium
+
+  * PBS Pro uses 'project' not 'account'.
+  * Simplify act_wall_time processing.
+  * est_wall_time is optional and can be None.
+
+ -- Brian May <bam@debian.org>  Fri, 06 Mar 2015 11:10:51 +1100
+
+python-alogger (2.2.3-1) unstable; urgency=low
+
+  * Support PBS parser as legacy alias for TORQUE.
+  * Ignore file not found error when reading TORQUE log file.
+  * Fix RPM package version.
+
+ -- Brian May <bam@debian.org>  Fri, 31 Oct 2014 15:37:09 +1100
+
+python-alogger (2.2.2-1) unstable; urgency=low
+
+  * Include test data.
+  * New API to read from source. Note: Slurm reader still incomplete, memory
+    usage information will not be read.
+  * Update sample torque log file.
+
+ -- Brian May <bam@debian.org>  Thu, 30 Oct 2014 13:53:48 +1100
+
+python-alogger (2.2.1-1) unstable; urgency=low
+
+  * New version.
+  * More tests.
+
+ -- Brian May <bam@debian.org>  Mon, 27 Oct 2014 11:33:35 +1100
+
+python-alogger (2.2.0-1) unstable; urgency=low
+
+  * Add Vcs headers.
+  * Python3 package.
+  * New release.
+  * Fix print syntax for Python3.
+  * Fix PEP8 issues and tests.
+  * Fix copyright notices.
+  * Check the results of the tests.
+  * git ignore file.
+  * Update pypi classifiers, we have Python3 support.
+  * Add missing file.
+  * Fix comments.
+  * New plugin architecture.
+
+ -- Brian May <bam@debian.org>  Mon, 07 Jul 2014 11:58:42 +1000
+
+python-alogger (2.1.7-1) unstable; urgency=low
+
+  * Updates for Slurm support. Contributed by VLSCI.
+
+ -- Brian May <bam@debian.org>  Mon, 19 May 2014 13:18:50 +1000
+
+python-alogger (2.1.6-1) unstable; urgency=low
+
+  * Update python packaging.
+  * Update information.
+  * No functional changes.
+
+ -- Brian May <bam@debian.org>  Tue, 11 Mar 2014 09:31:19 +1100
+
+python-alogger (2.1.5-1) unstable; urgency=low
+
+  * Update Debian packaging.
+
+ -- Brian May <bam@debian.org>  Wed, 29 Jan 2014 11:45:52 +1100
+
+python-alogger (2.1.4-1) unstable; urgency=low
+
+  * Update Debian packaging.
+  * Slurm specific changes from 2010.
+  * Initial attempt for Windows HPC support from 2011.
+
+ -- Brian May <bam@debian.org>  Tue, 28 May 2013 16:05:53 +1000
+
+python-alogger (2.1.3-1) testing; urgency=low
+
+  * Updated how slurm processes projects
+
+ -- Sam Morrison <sam@vpac.org>  Tue, 30 Nov 2010 15:58:50 +1100
+
+python-alogger (2.1.2-1) testing; urgency=low
+
+  * More improvements to slurm parser 
+
+ -- Sam Morrison <sam@vpac.org>  Thu, 23 Sep 2010 15:43:10 +1000
+
+python-alogger (2.1.1-1) testing; urgency=low
+
+  * Default values for SLURM
+
+ -- Sam Morrison <sam@vpac.org>  Wed, 22 Sep 2010 16:55:00 +1000
+
+python-alogger (2.1-1) testing; urgency=low
+
+  * Added SLURM log parser
+  * Moved parsers into own directory
+  * Debian packaging changes
+
+ -- Sam Morrison <sam@vpac.org>  Wed, 22 Sep 2010 11:03:20 +1000
+
+python-alogger (2.0.3) testing; urgency=low
+
+  * Handle memory values in a cleaner way
+
+ -- Sam Morrison <sam@vpac.org>  Fri, 03 Sep 2010 15:26:53 +1000
+
+python-alogger (2.0.2) testing; urgency=low
+
+  * Parse exec_host in PBS
+
+ -- Sam Morrison <sam@vpac.org>  Fri, 28 May 2010 11:34:04 +1000
+
+python-alogger (2.0.1) testing; urgency=low
+
+  * Initial release.
+
+ -- Sam Morrison <sam@vpac.org>  Fri, 19 Mar 2010 16:40:37 +1100
