@@ -1,4 +1,4 @@
-# Copyright 2007-2014 VPAC
+# Copyright 2013-2017, Brian May
 #
 # This file is part of python-alogger.
 #
