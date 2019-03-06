@@ -14,19 +14,18 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with python-alogger  If not, see <http://www.gnu.org/licenses/>.
-from __future__ import absolute_import
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
 
-import filecmp
 import datetime
-import os.path
+import filecmp
 import json
+import os.path
 import shutil
 import warnings
 
-from .. import log_to_dict, get_parser
-
+from .. import get_parser, log_to_dict
 from . import examples, results
+
 
 # disable rebuilding files
 _testing_only = True

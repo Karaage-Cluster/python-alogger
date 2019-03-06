@@ -14,8 +14,16 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with python-alogger  If not, see <http://www.gnu.org/licenses/>.
-from __future__ import absolute_import
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
+
+import datetime
+import logging
+import warnings
+
+from alogger.utils import get_in_seconds, get_mem_in_kb, get_mem_in_mb
+
+from ..base import BaseParser
+
 
 """
 Declare log parsing methods here.
@@ -51,14 +59,9 @@ Raises value error if funky wall time
 
 """
 
-import warnings
-import datetime
-import logging
 logger = logging.getLogger(__name__)
 
-from alogger.utils import get_in_seconds, get_mem_in_kb, get_mem_in_mb
 
-from ..base import BaseParser
 
 
 class Parser(BaseParser):

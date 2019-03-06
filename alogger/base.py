@@ -14,13 +14,13 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with python-alogger  If not, see <http://www.gnu.org/licenses/>.
-from __future__ import absolute_import
-from __future__ import unicode_literals
-from __future__ import print_function
+from __future__ import absolute_import, print_function, unicode_literals
 
 import errno
-import os.path
 import logging
+import os.path
+
+
 logger = logging.getLogger(__name__)
 
 _plugins = {}

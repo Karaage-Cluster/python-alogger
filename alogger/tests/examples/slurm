@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import sys
 
+
 sys.stdout.write(
 """Cluster|JobID|User|UID|Group|GID|Account|JobName|State|Partition|Timelimit|Elapsed|Start|End|Submit|Eligible|AllocCPUS|NodeList|ReqMem|
 bruce|1670438|samuel|500|vlsci|506|vlsci|bash|CANCELLED by 500|debug|00:10:00|00:00:00|2014-02-25T15:49:12|2014-02-25T15:49:12|2014-02-25T15:48:53|2014-02-25T15:48:53|0|None assigned|2Gc|

@@ -14,18 +14,20 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with python-alogger  If not, see <http://www.gnu.org/licenses/>.
-from __future__ import absolute_import
-from __future__ import unicode_literals
+from __future__ import absolute_import, unicode_literals
 
 import csv
-import sys
-import subprocess
 import datetime
-import time
 import logging
-logger = logging.getLogger(__name__)
+import subprocess
+import sys
+import time
 
 from ..base import BaseParser, TextLog
+
+
+logger = logging.getLogger(__name__)
+
 
 if sys.version_info < (3, 0):
     # Python2: csv module does not support unicode, we must use byte strings.
