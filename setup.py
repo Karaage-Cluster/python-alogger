@@ -71,7 +71,10 @@ setup(
     package_data={
         '': ['*.log', '*.json'],
     },
-    test_suite="alogger.tests",
+    tests_require=[
+        "pytest",
+        "pytest-runner",
+    ],
     cmdclass={
         'verify': VerifyVersionCommand,
     }
