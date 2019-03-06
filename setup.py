@@ -17,7 +17,9 @@
 # You should have received a copy of the GNU General Public License
 # along with python-alogger  If not, see <http://www.gnu.org/licenses/>.
 
-from setuptools import setup, find_packages
+import sys
+
+from setuptools import Command, setup, find_packages
 
 
 VERSION='2.2.11'
