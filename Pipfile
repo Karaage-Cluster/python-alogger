@@ -6,6 +6,9 @@ verify_ssl = true
 [dev-packages]
 pytest = "*"
 pytest-runner = "*"
+wheel = "*"
+twine = "*"
+bumpversion = "*"
 
 [packages]
 
