@@ -62,8 +62,6 @@ Raises value error if funky wall time
 logger = logging.getLogger(__name__)
 
 
-
-
 class Parser(BaseParser):
 
     def line_to_dict(self, line, cfg=None):
@@ -93,7 +91,7 @@ class Parser(BaseParser):
             try:
                 key, value = d.split('=')
                 data[key] = value
-            except:
+            except ValueError:
                 continue
 
         # Check to see if line worth proccessing

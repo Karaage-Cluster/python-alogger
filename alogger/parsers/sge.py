@@ -59,7 +59,6 @@ Raises value error if funky wall time
 logger = logging.getLogger(__name__)
 
 
-
 class Parser(BaseParser):
 
     def line_to_dict(self, line, cfg=None):
@@ -80,7 +79,7 @@ class Parser(BaseParser):
                 granted_pe, slots, UNKNOWN, cpu, mem, UNKNOWN, \
                 command_line_arguments, UNKNOWN, UNKNOWN, \
                 maxvmem_bytes = line.split(':')
-        except:
+        except ValueError:
             a1, a2, queue, hostname, group, username, jobname, jobid, \
                 account, \
                 priority, qsub_time, start_time, end_time, failed, \
@@ -106,7 +105,7 @@ class Parser(BaseParser):
         try:
             formatted_data['est_wall_time'] = None
             formatted_data['act_wall_time'] = int(ru_wallclock)
-        except:
+        except ValueError:
             logger.error(
                 'Failed to parse act_wall_time value: %s' % ru_wallclock)
             raise ValueError

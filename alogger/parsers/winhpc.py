@@ -59,7 +59,6 @@ Raises value error if funky wall time
 logger = logging.getLogger(__name__)
 
 
-
 class Parser(BaseParser):
 
     def line_to_dict(self, line, cfg=None):
@@ -84,7 +83,7 @@ class Parser(BaseParser):
             try:
                 key, value = d.split('=')
                 data[key] = value
-            except:
+            except ValueError:
                 continue
 
         logger.debug(jobid)
@@ -119,7 +118,7 @@ class Parser(BaseParser):
 
         try:
             formatted_data['exec_hosts'] = data['HOSTLIST'].split(',')
-        except:
+        except ValueError:
             pass
         # cores = data['exec_host'].count('/')
         formatted_data['cores'] = int(data['TASKS'])

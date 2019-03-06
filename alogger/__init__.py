@@ -34,6 +34,7 @@ _plugins = {}
 def register_plugin(module_name, log_type):
     _plugins[log_type] = module_name
 
+
 register_plugin("alogger.parsers.torque.Parser", "TORQUE")
 register_plugin("alogger.parsers.torque.PbsParser", "PBS")
 register_plugin("alogger.parsers.sge.Parser", "SGE")
