@@ -8,6 +8,15 @@ adheres to `Semantic Versioning`_.
 .. _`Keep a Changelog`: http://keepachangelog.com/
 .. _`Semantic Versioning`: http://semver.org/
 
+
+2.2.11 - 2018-03-06
+-------------------
+
+Changes
+~~~~~~~
+* Use circleci for builds
+
+
 2.2.10 - 2017-05-20
 -------------------
 
@@ -15,6 +24,7 @@ Fixed
 ~~~~~
 * Various minor issues with tests.
 * Incorrect copyright notices, referring to VPAC which no longer exists.
+
 
 2.2.9 - 2016-05-03
 ------------------
