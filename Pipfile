@@ -9,6 +9,8 @@ pytest-runner = "*"
 wheel = "*"
 twine = "*"
 bumpversion = "*"
+isort = "*"
+flake8 = "*"
 
 [packages]
 

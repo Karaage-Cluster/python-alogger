@@ -22,6 +22,11 @@ import warnings
 import logging
 logger = logging.getLogger(__name__)
 
+
+__author__ = """Brian May"""
+__email__ = 'brian@linuxpenguins.xyz'
+__version__ = '2.1.1'
+
 _plugins = {}
 
 

@@ -19,12 +19,34 @@
 
 from setuptools import setup, find_packages
 
+
+VERSION='2.2.11'
+
+class VerifyVersionCommand(Command):
+    """Custom command to verify that the git tag matches our version"""
+    description = 'verify that the git tag matches our version'
+    user_options = [
+      ('version=', None, 'expected version'),
+    ]
+
+    def initialize_options(self):
+        self.version = None
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        version = self.version
+
+        if version != VERSION:
+            info = "{0} does not match the version of this app: {1}".format(
+                version, VERSION
+            )
+            sys.exit(info)
+
 setup(
     name="python-alogger",
-    use_scm_version={
-        'write_to': "alogger/version.py",
-    },
-    setup_requires=['setuptools_scm'],
+    version=VERSION,
     url='https://github.com/Karaage-Cluster/python-alogger',
     author='Brian May',
     author_email='brian@linuxpenguins.xyz',
@@ -48,4 +70,7 @@ setup(
         '': ['*.log', '*.json'],
     },
     test_suite="alogger.tests",
+    cmdclass={
+        'verify': VerifyVersionCommand,
+    }
 )
