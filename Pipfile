@@ -11,6 +11,7 @@ twine = "*"
 bumpversion = "*"
 isort = "*"
 flake8 = "*"
+pytest-cov = "*"
 
 [packages]
 
