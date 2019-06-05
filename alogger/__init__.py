@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 __author__ = """Brian May"""
 __email__ = 'brian@linuxpenguins.xyz'
-__version__ = '2.2.11'
+__version__ = '2.2.12'
 
 _plugins = {}
 
