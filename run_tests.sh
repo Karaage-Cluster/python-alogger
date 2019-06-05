@@ -7,27 +7,17 @@ cd $DIR
 echo ""
 echo "FLAKE8"
 echo "############################"
-flake8 .
+flake8 alogger
 if [ ! $? -eq 0 ]
 then
     RETURN=1
 fi
 
 echo ""
-echo "TESTS - Python 2"
+echo "TESTS"
 echo "############################"
 export TZ='Australia/Melbourne'
-python2 setup.py test
-if [ ! $? -eq 0 ]
-then
-    RETURN=1
-fi
-
-echo ""
-echo "TESTS - Python 3"
-echo "############################"
-export TZ='Australia/Melbourne'
-python3 setup.py test
+py.test alogger
 if [ ! $? -eq 0 ]
 then
     RETURN=1
