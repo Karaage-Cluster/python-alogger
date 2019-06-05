@@ -9,7 +9,15 @@ adheres to `Semantic Versioning`_.
 .. _`Semantic Versioning`: http://semver.org/
 
 
-2.2.11 - 2018-03-06
+2.2.12 - 2019-06-05
+-------------------
+
+Fixed
+~~~~~
+* Fix incorrect regexp for memory calculation.
+
+
+2.2.11 - 2019-03-06
 -------------------
 
 Changes
