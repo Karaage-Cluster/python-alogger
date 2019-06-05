@@ -58,7 +58,7 @@ def get_in_seconds(time):
 def get_mem_in_kb(memory_string):
     # Strip kb or b etc. from end of mem entries
     # Example imput 304kb or 322b
-    mem_re = re.compile('([0-9]*)([[a-zA-Z]*)')
+    mem_re = re.compile('([0-9]*)([a-zA-Z]*)')
     memory, unit = mem_re.match(memory_string).groups()
     memory = int(memory)
     if unit == 'kb':
